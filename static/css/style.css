@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
     --gradient_fundo: linear-gradient(to right bottom, #3FA110 9%, #173B06 100%);
     /* Gradient do fundo */
-    --sombra: 5px 4px 10px 5px lightgray;
+    --sombra: 0px 4px 5px 4px lightgray;
     /* Sombras nas caixas/cards */
+    --verde_banner: #33830D;
     --verde_medio: #146E37;
     /*Cor do footer, botão dashboard*/
     --verde_claro: #00C94E;
@@ -165,51 +167,85 @@ footer>small>p {
     padding-right: 10px;
 }
 
-.banner {
+h1 {
+    font-family: "Exo 2";
+    font-weight: 500;
+}
+
+.banner  {
     height: 500px;
+    background-image: url('../img/img_fundo_banner.png');
+    background-color: var(--verde_positivo);
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 .banner h1 {
-    font-size: 3.5em;
-}
-
-.banner p {
-    font-size: 1.5em;
-    margin: 10px 0 25px 0;
+    font-size: 5em;
+    width: 600px;
+    margin: 30px 0 0 100px;
 }
 
 .banner_infos {
-    padding: 114px 0 0 150px;
+    display: flex;
 }
 
-.banner_imgs {
-    display: flex;
-    justify-content: right;
+.banner p {
+    font-size: 1.8em;
+    max-width: 500px;
+    margin: 30px 0 0 100px;
 }
 
 .banner_button {
     background-color: white;
     color: var(--verde_medio);
-    padding: 10px;
+    padding: 7px 30px 15px 30px;
+    height: 60px;
     border-radius: 10px;
     display: inline-block;
-    font-size: 1.4em;
+    font-size: 2.2em;
+    margin: 50px 0 0 100px;;
 }
 
-.img_fundo_banner {
-    position: relative;
-    left: 447px;
+.servicos {
+    font-size: 20px;
+    text-align: center;
+    display: flex;
+    justify-self: center;
 }
 
-.mulher_banner {
-    position: relative;
-    left: -120px;
+.servicos_h1 {
+    margin: 10px 0 20px 0;
+    font-size: 3em;
+    text-align: center;
+    color: var(--verde_banner);
 }
 
-.mulher_banner,
-.img_fundo_banner {
-    top: -386px;
+.servico_card {
+    height: 300px;
+    min-width: 300px;
+    background-color: white;
+    padding: 10px;
+    width: 25%;
+    margin: auto;
+    margin-bottom: 30px;
+    border-radius: 15px;
+    box-shadow: var(--sombra);
 }
+
+.div_icone {
+    margin-top: 20px;
+}
+/* Caso for colocar cor de fundo no icone */
+/* 
+.div_icone {
+    display: flex;
+    height: 130px;
+    width: 130px;
+    align-items: center;
+    justify-content: center;
+} */
 
 .fundo_com_chapeu {
     background-image: url(../img/homem_com_chapeu.png);
@@ -415,4 +451,27 @@ form input {
 .dash_movimenta .container_cards{
     width: 50%;
     margin-left: 100px;
+}
+
+.sobre {
+    padding: 30px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.sobre_p {
+    width: 500px;
+}
+
+.fundo_sobre_items {
+    display: flex;
+    color: black;
+    background-color: white;
+    width: 500px;
+    height: 70px;
+    justify-content: space-around;
+}
+
+.sobre_items {
+    margin: 10px;
 }
