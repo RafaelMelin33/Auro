@@ -474,4 +474,56 @@ form input {
 
 .sobre_items {
     margin: 10px;
+
 }
+
+/* Diogo 19/09/25 */
+
+.sobre {
+    padding: 30px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.sobre_p {
+    max-width: 50%;
+}
+
+.fundo_sobre_items {
+    display: flex;
+    color: black;
+    width: 350px;
+    background-color: white;
+    height: 130px;
+    justify-content: space-around;
+    border-radius: 12.5px;
+}
+
+.fundo_sobre_items p {
+    width: 100%;
+}
+
+.divisor_items {
+    display: flex; gap: 10px;
+}
+
+.cf_titulo {
+    text-align: center;
+}
+
+.como_funciona {
+    justify-content: space-around;
+    text-align: center;
+}
+
+.div_cf {
+    display: flex;
+    padding: 17px;
+    width: 25em;
+    height: 7em;
+    border: var(--verde_borda) solid;
+    border-radius: 10px;
+    flex-flow: row;
+}
+
+/*  */
