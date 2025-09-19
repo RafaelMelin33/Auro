@@ -1,0 +1,418 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+    --gradient_fundo: linear-gradient(to right bottom, #3FA110 9%, #173B06 100%);
+    /* Gradient do fundo */
+    --sombra: 5px 4px 10px 5px lightgray;
+    /* Sombras nas caixas/cards */
+    --verde_medio: #146E37;
+    /*Cor do footer, botão dashboard*/
+    --verde_claro: #00C94E;
+    /*Botão dashboard selecionado*/
+    --verde_botao: #168C44;
+    /*Cor dos botões de formulários*/
+    --verde_destraque: #4FFF4F;
+    /*Cor do adicionar receita*/
+    --verde_alert: #008E2B;
+    /*Cor do alerta de coisas que deram certo*/
+    --verde_borda: #57C647;
+    /*Cor da borda de coisas com borda verde*/
+    --verde_positivo: #379d46;
+    /* Cor da letra de valores positivos */
+    --vermelho_destaque: #FF5C5C;
+    /*Cor do adicionar despesa*/
+    --vermelho_alert: #FF0000;
+    /*Cor do alerta de coisas que deram errado*/
+    --vermelho_negativo: #BA3838;
+    /* Cor da letra de valores negativos */
+    --azul_saldo: #121BCE;
+    /* Cor azul do saldo */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'nunito';
+}
+
+.d-flex {
+    display: flex;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+.between {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.around {
+    align-items: center;
+    justify-content: space-around;
+}
+
+.evenly {
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.formata_altura{
+    min-height: calc(100vh -  267px);
+}
+
+.fundo {
+    background-image: var(--gradient_fundo);
+    color: white;
+    padding: 10px 0;
+}
+
+.btn{
+    color: white;
+    background-color: var(--verde_botao);
+    padding: 10px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+header {
+    padding: 10px;
+}
+
+header nav {
+    width: 50%;
+}
+
+header nav a {
+    color: black;
+}
+
+header nav #logar {
+    background-color: var(--verde_botao);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+header nav div{
+    gap: 10px;
+}
+
+header nav #perfil {
+    background-color: var(--verde_botao);
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+}
+
+header nav #perfil img {
+    width: 60px;
+    height: 60px;
+}
+
+header nav div a{
+    display: inline-block;
+}
+
+main {}
+
+footer {
+    background-color: var(--verde_medio);
+    color: white;
+    padding: 15px;
+}
+
+footer div div {
+    width: 25%;
+}
+
+footer div .semBr {
+    display: inline-block;
+}
+
+footer div .infosFooter {
+    text-align: center;
+}
+
+footer hr {
+    width: 98%;
+    margin: auto;
+    margin: 20px 0;
+}
+
+footer nav {
+    text-align: center;
+}
+
+footer nav a,
+footer nav span {
+    margin: 0 5px;
+    color: white;
+}
+
+footer>small>p {
+    text-align: right;
+    width: 100%;
+    padding-right: 10px;
+}
+
+.banner {
+    height: 500px;
+}
+
+.banner h1 {
+    font-size: 3.5em;
+}
+
+.banner p {
+    font-size: 1.5em;
+    margin: 10px 0 25px 0;
+}
+
+.banner_infos {
+    padding: 114px 0 0 150px;
+}
+
+.banner_imgs {
+    display: flex;
+    justify-content: right;
+}
+
+.banner_button {
+    background-color: white;
+    color: var(--verde_medio);
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    font-size: 1.4em;
+}
+
+.img_fundo_banner {
+    position: relative;
+    left: 447px;
+}
+
+.mulher_banner {
+    position: relative;
+    left: -120px;
+}
+
+.mulher_banner,
+.img_fundo_banner {
+    top: -386px;
+}
+
+.fundo_com_chapeu {
+    background-image: url(../img/homem_com_chapeu.png);
+}
+
+.fundo_sem_chapeu {
+    background-image: url(../img/homem_sem_chapeu.png);
+    justify-content: center;
+}
+
+.fundo_sem_chapeu,
+.fundo_com_chapeu {
+    background-size: cover;
+    height: calc(100vh - 84px - 183px);
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.fundo_com_chapeu .fundo_form {
+    background-color: white;
+    padding: 10px;
+    width: 25%;
+    left: 100px;
+    position: relative;
+    border-radius: 15px;
+}
+
+.fundo_sem_chapeu .fundo_form {
+    background-color: white;
+    padding: 10px;
+    width: 25%;
+    left: calc(37.5% - 100px);
+    position: relative;
+    border-radius: 15px;
+}
+
+form label,
+form input,
+form button,
+form a {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 10px 5px;
+    border-radius: 15px;
+}
+
+form button {
+    background-color: var(--verde_botao);
+    color: white;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+form input {
+    background-color: lightgray;
+}
+
+.erroSenha {
+    color: var(--vermelho_alert);
+}
+
+.acertoSenha {
+    color: var(--verde_alert);
+}
+
+.etapas_cadastro {
+    width: 25%;
+    position: relative;
+    left: calc(37.5% - 100px);
+    margin-bottom: 20px;
+}
+
+.etapas_cadastro h2 {
+    color: white;
+}
+
+.etapas_cadastro .bola {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 100%;
+}
+
+.etapas_cadastro>div {
+    width: 100%;
+}
+
+.etapas_cadastro hr {
+    width: calc(55% - 100px);
+    padding: 2px;
+    background-color: white;
+    border: none;
+}
+
+.etapas_cadastro .bolaP {
+    width: 60px;
+    height: 60px;
+    background-color: var(--verde_medio);
+    color: white;
+}
+
+.fundo .fundo_perfil{
+    background-color: white;
+    width: 90%;
+    color: black;
+    margin: auto;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.fundo_perfil .infos_perfil{
+    width: 95%;
+    margin: 30px auto 0;
+    background-color: lightgray;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.positivo{
+    color: var(--verde_positivo);
+}
+
+.negativo{
+    color: var(--vermelho_negativo);
+}
+
+.container_cards{
+    width: 80%;
+    margin: 40px auto 30px;
+}
+
+.card_valores{
+    box-shadow: var(--sombra);
+    border-radius: 15px;
+    height: 100px;
+    padding: 10px 0 10px 30px;
+}
+
+.fundo_perfil .card_valores{
+    box-shadow: var(--sombra);
+    border-radius: 15px;
+    height: 100px;
+    padding: 10px 0 10px 30px;
+    width: 45%;
+}
+
+.card_valores p{
+    margin-top: 30px;
+}
+
+.faixa_dash{
+    background-color: var(--verde_medio);
+    color: white;
+    padding: 10px 20px;
+}
+
+.nav_dash{
+    min-width: 155px;
+    width: 15%;
+    box-shadow: var(--sombra);
+}
+
+.nav_dash a{
+    margin: 10px 0;
+    width: 140px;
+    text-align: center;
+}
+
+.fundo_dash .card_valores{
+    width: 25%;
+}
+
+.saldo{
+    color: var(--azul_saldo);
+}
+
+.infos_dash{
+    width: 100%;
+}
+
+.infos_dash .container_cards{
+    width: 90%;
+}
+
+.selecionado{
+    background-color: var(--verde_claro);
+}
+
+.card_historico{
+    width: 95%;
+    box-shadow: var(--sombra);
+    border-radius: 15px;
+    padding: 15px;
+    margin-top: 25px;
+}
+
+.dash_movimenta .card_valores{
+    width: 45%;
+}
+
+.dash_movimenta .container_cards{
+    width: 50%;
+    margin-left: 100px;
+}
