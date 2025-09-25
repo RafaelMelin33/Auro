@@ -206,6 +206,7 @@ h1 {
 .banner p {
     font-size: 1.8em;
     max-width: 500px;
+    width: 100%;
     margin: 30px 0 0 100px;
 }
 
@@ -263,6 +264,7 @@ h1 {
 
 .fundo_com_chapeu {
     background-image: url(../img/homem_com_chapeu.png);
+    background-position: center center;
 }
 
 .fundo_sem_chapeu {
@@ -303,6 +305,10 @@ h1 {
     left: calc(37.5% - 100px);
     position: relative;
     border-radius: 15px;
+}
+
+.fundo_form a:visited {
+    color: var(--azul_saldo);
 }
 
 form label,
@@ -388,6 +394,10 @@ form input {
     border-radius: 15px;
 }
 
+.infos_perfil img{
+    width: 30px;
+}
+
 .positivo {
     color: var(--verde_positivo);
 }
@@ -404,8 +414,8 @@ form input {
 .card_valores {
     box-shadow: var(--sombra);
     border-radius: 15px;
-    height: 110px;
-    padding: 0px 0px 10px 20px;
+    height: 100px;
+    padding: 10px 0 10px 30px;
 }
 
 .fundo_perfil .card_valores {
@@ -441,28 +451,34 @@ form input {
     flex-wrap: wrap;
 }
 
+.adicionar_taxa, .adicionar_adm{
+    border-radius: 100%;
+    border: 1px solid black;
+    padding: 2px 8px;
+    font-size: 1.5em;
+    margin-left: 10px;
+    display: inline-block;
+    color: black;
+}
+
+.cadastrar_adm{
+    margin: auto;
+}
+
 .card_valores p {
-    margin-top: 0px;
+    margin-top: 30px;
 }
 
 .faixa_dash {
     background-color: var(--verde_medio);
     color: white;
     padding: 10px 20px;
-    z-index: 2;
-}
-
-.dash_footer {
-    position: relative;
-    z-index: 2;
 }
 
 .nav_dash {
     min-width: 155px;
     width: 15%;
-    box-shadow: var(--sombra);
-    position: relative;
-    z-index: 1;
+    box-shadow: 5px 0 5px -1px lightgray;
 }
 
 .nav_dash a {
@@ -502,17 +518,16 @@ form input {
 
 .adicionar_despesa,
 .adicionar_receita {
-    font-size: 50px;
-    border-radius: 100%;
     margin-right: 15px;
+    font-size: 1.5em;
 }
 
-div .adicionar_despesa {
+.adicionar_despesa {
     color: var(--vermelho_destaque);
 }
 
-div .adicionar_receita {
-    color: var(--verde_claro);
+.adicionar_receita {
+    color: var(--verde_destraque);
 }
 
 .receitas,
@@ -523,8 +538,7 @@ div .adicionar_receita {
 .dash_movimenta .card_receita,
 .dash_movimenta .card_despesa {
     width: 90%;
-    margin: 40px auto 10px;
-    background-color: white;
+    margin: 20px auto;
     box-shadow: var(--sombra);
     padding: 5px;
     border-radius: 15px;
@@ -534,37 +548,27 @@ div .adicionar_receita {
     width: 30px;
 }
 
-/* .sobre {
-    padding: 30px;
-    justify-content: space-around;
-    align-items: center;
+.emprestimo{
+    width: 30vw;
+    box-shadow: var(--sombra);
+    border-radius: 15px;
+    padding: 10px;
 }
-
-.sobre_p {
-    width: 500px;
-}
-
-.fundo_sobre_items {
-    display: flex;
-    color: black;
-    background-color: white;
-    width: 500px;
-    height: 70px;
-    justify-content: space-around;
-}
-
-.sobre_items {
-    margin: 10px;
-} */
 
 .sobre {
     padding: 30px;
     justify-content: space-around;
     align-items: center;
+    height: 300px;
+}
+
+.sobre div h1{
+    font-size: 3em;
 }
 
 .sobre_p {
     max-width: 50%;
+    font-size: 1.3em;
 }
 
 .fundo_sobre_items {
@@ -587,7 +591,10 @@ div .adicionar_receita {
 }
 
 .cf_titulo {
+    margin-top: 5px;
     text-align: center;
+    font-size: 3em;
+    color: var(--verde_banner);
 }
 
 .como_funciona {
