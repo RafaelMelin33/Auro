@@ -15,7 +15,7 @@
         <nav class="d-flex around">
             <a href="index.html">Nossos serviços</a>
             <a href="index.html">Quem somos</a>
-            <a href="index.html">Entre em contato</a>
+            <a href="index.html">Como funciona</a>
             <div class="d-flex center">
                 <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
                 <a href="index.html" id="logar">Sair</a>
@@ -34,17 +34,62 @@
                 <a href="dashboard_movimentacoes.html" class="btn selecionado">Movimentações</a>
             </nav>
             <div class="infos_dash d-flex">
-                <div class="container_cards">
-                    <div class="card_valores">
-                        <h3>Receitas</h3>
-                        <p class="positivo">R$0,00</p>
+                <div class="receitas">
+                    <div class="container_cards">
+                        <div class="card_valores">
+                            <div class="d-flex between">
+                                <h3>Receitas</h3>
+                                <div><a href="cadastrar_receita.html" class="adicionar_receita">+</a></div>
+                            </div>
+                            <p class="positivo">R$0,00</p>
+                        </div>
                     </div>
-                    
+                    <div class="card_receita d-flex between">
+                        <h3>Receitas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_receita.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
+                    </div>
+                    <div class="card_receita d-flex between">
+                        <h3>Receitas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_receita.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
+                    </div>
+                    <div class="card_receita d-flex between">
+                        <h3>Receitas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_receita.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
+                    </div>
                 </div>
-                <div class="container_cards">
-                    <div class="card_valores">
-                        <h3>Despesas</h3>
-                        <p class="negativo">R$0,00</p>
+                <div class="despesas">
+                    <div class="container_cards">
+                        <div class="card_valores">
+                            <div class="d-flex between">
+                                <h3>Despesas</h3>
+                                <div><a href="cadastrar_despesa.html" class="adicionar_despesa">+</a></div>
+                            </div>
+                            <p class="negativo">R$0,00</p>
+                        </div>
+                    </div>
+                    <div class="card_despesa d-flex between">
+                        <h3>despesas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_despesa.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
+                    </div>
+                    <div class="card_despesa d-flex between">
+                        <h3>despesas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_despesa.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
+                    </div>
+                    <div class="card_despesa d-flex between">
+                        <h3>despesas</h3>
+                        <p>R$00,00</p>
+                        <p>00/00/00</p>
+                        <a href="editar_despesa.html" class="editar"><img src="../static/img/editar_icon.png" alt="imagem editar"></a>
                     </div>
                 </div>
             </div>
@@ -52,7 +97,7 @@
     </main>
     <footer>
         <small>
-            <div class="d-flex between">
+            <div class="d-flex between footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -60,19 +105,19 @@
                     <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
                     <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
                 </div>
-                <div class="d-flex column center">
+                <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
-                <div>
+                <div class="logo_footer">
                     <img src="../static/img/logo_clara.png" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="">Nossos Serviços </a><span>|</span>
-                <a href="">Entre em Contato </a><span>|</span>
-                <a href="">Quem somos</a>
+                <a href="#servicos">Nossos Serviços </a><span>|</span>
+                <a href="#como_funciona">Como funciona</a><span>|</span>
+                <a href="#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>

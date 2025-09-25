@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
+    <title>Auro - editarusuario</title>
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
@@ -16,28 +16,29 @@
             <a href="index.html">Nossos serviços</a>
             <a href="index.html">Quem somos</a>
             <a href="index.html">Como funciona</a>
-            <a href="login.html" id="logar">Acessar minha conta</a>
+                     <div class="d-flex center">
+                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+            </div>
             <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
     <main>
-        <section class="fundo_com_chapeu">
+        <section class="fundo formata_altura d-flex center">
             <div class="fundo_form">
-                <h2 class="d-flex center">Acesse o sistema</h2>
+                <h2 class="d-flex center">Adicionar Taxa</h2>
                 <form action="">
-                    <label for="cpf">CPF</label>
-                    <input type="number" name="cpf" id="cpf" placeholder="Digite seu CPF">
-                    <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
-                    <a href="cadastro.html">* Cadastre-se já</a>
-                    <button type="submit">Login</button>
+                    <label for="valor">Valor</label>
+                    <input placeholder="Digite o valor ex: R$100.00" type="number" name="valor" id="valor">
+                    <label for="ano">Ano</label> 
+                    <input placeholder="Digite o ano" type="number" name="ano" id="ano">
+                    <button>Adicionar Taxa</button>
                 </form>
             </div>
         </section>
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex between">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -45,19 +46,19 @@
                     <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
                     <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
                 </div>
-                <div class="d-flex column center footer_endereco">
+                <div class="d-flex column center">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
-                <div class="logo_footer">
+                <div>
                     <img src="../static/img/logo_clara.png" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html">Nossos Serviços </a><span>|</span>
+                <a href="index.html">Como funciona </a><span>|</span>
+                <a href="index.html">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>

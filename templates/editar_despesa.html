@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
+    <title>Auro - editarusuario</title>
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
@@ -16,21 +16,24 @@
             <a href="index.html">Nossos serviços</a>
             <a href="index.html">Quem somos</a>
             <a href="index.html">Como funciona</a>
-            <a href="login.html" id="logar">Acessar minha conta</a>
+                     <div class="d-flex center">
+                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+            </div>
             <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
     <main>
         <section class="fundo_com_chapeu">
             <div class="fundo_form">
-                <h2 class="d-flex center">Acesse o sistema</h2>
+                <h2 class="d-flex center">Editar despesas</h2>
                 <form action="">
-                    <label for="cpf">CPF</label>
-                    <input type="number" name="cpf" id="cpf" placeholder="Digite seu CPF">
-                    <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
-                    <a href="cadastro.html">* Cadastre-se já</a>
-                    <button type="submit">Login</button>
+                    <label for="descricao da despesa">Descrição da Despesa</label>
+                    <input type="text" name="descricao da despesa" id="descricao da despesa">
+                    <label for="valor">Valor</label>
+                    <input type="number" name="valor" id="valor">
+                    <label for="data">Data</label>
+                    <input type="date" name="data" id="data">
+                    <button type="submit">Editar Despesa</button>
                 </form>
             </div>
         </section>
