@@ -67,8 +67,8 @@
     flex-direction: column;
 }
 
-.formata_altura{
-    min-height: calc(100vh -  267px);
+.formata_altura {
+    min-height: calc(100vh - 267px);
 }
 
 .fundo {
@@ -77,12 +77,16 @@
     padding: 10px 0;
 }
 
-.btn{
+.btn {
     color: white;
     background-color: var(--verde_botao);
     padding: 10px;
     border-radius: 15px;
     display: inline-block;
+}
+
+#menu_hamburguer {
+    display: none;
 }
 
 header {
@@ -104,7 +108,7 @@ header nav #logar {
     border-radius: 10px;
 }
 
-header nav div{
+header nav div {
     gap: 10px;
 }
 
@@ -121,7 +125,7 @@ header nav #perfil img {
     height: 60px;
 }
 
-header nav div a{
+header nav div a {
     display: inline-block;
 }
 
@@ -167,15 +171,23 @@ footer>small>p {
     padding-right: 10px;
 }
 
+footer .redes {
+    width: 30px;
+}
+
 h1 {
     font-family: "Exo 2";
     font-weight: 500;
 }
 
-.banner  {
+.fundobanner {
+    background-image: var(--gradient_fundo);
+}
+
+.banner {
     height: 500px;
-    background-image: url('../img/img_fundo_banner.png');
-    background-color: var(--verde_positivo);
+    background-image: url('../img/img_fundo_banner.png'), var(--gradient_fundo);
+    /* background-color: var(--verde_positivo); */
     background-position: right;
     background-repeat: no-repeat;
     background-size: contain;
@@ -205,7 +217,8 @@ h1 {
     border-radius: 10px;
     display: inline-block;
     font-size: 2.2em;
-    margin: 50px 0 0 100px;;
+    margin: 50px 0 0 100px;
+    ;
 }
 
 .servicos {
@@ -237,6 +250,7 @@ h1 {
 .div_icone {
     margin-top: 20px;
 }
+
 /* Caso for colocar cor de fundo no icone */
 /* 
 .div_icone {
@@ -259,16 +273,24 @@ h1 {
 .fundo_sem_chapeu,
 .fundo_com_chapeu {
     background-size: cover;
-    height: calc(100vh - 84px - 183px);
+    min-height: calc(100vh - 84px - 183px);
     display: flex;
     align-items: center;
     padding: 20px 0;
 }
 
+.fundo .fundo_form {
+    background-color: white;
+    padding: 10px;
+    width: 30%;
+    border-radius: 15px;
+    color: black;
+}
+
 .fundo_com_chapeu .fundo_form {
     background-color: white;
     padding: 10px;
-    width: 25%;
+    width: 30%;
     left: 100px;
     position: relative;
     border-radius: 15px;
@@ -277,7 +299,7 @@ h1 {
 .fundo_sem_chapeu .fundo_form {
     background-color: white;
     padding: 10px;
-    width: 25%;
+    width: 30%;
     left: calc(37.5% - 100px);
     position: relative;
     border-radius: 15px;
@@ -349,7 +371,7 @@ form input {
     color: white;
 }
 
-.fundo .fundo_perfil{
+.fundo .fundo_perfil {
     background-color: white;
     width: 90%;
     color: black;
@@ -358,7 +380,7 @@ form input {
     border-radius: 15px;
 }
 
-.fundo_perfil .infos_perfil{
+.fundo_perfil .infos_perfil {
     width: 95%;
     margin: 30px auto 0;
     background-color: lightgray;
@@ -366,27 +388,27 @@ form input {
     border-radius: 15px;
 }
 
-.positivo{
+.positivo {
     color: var(--verde_positivo);
 }
 
-.negativo{
+.negativo {
     color: var(--vermelho_negativo);
 }
 
-.container_cards{
+.container_cards {
     width: 80%;
     margin: 40px auto 30px;
 }
 
-.card_valores{
+.card_valores {
     box-shadow: var(--sombra);
     border-radius: 15px;
-    height: 100px;
-    padding: 10px 0 10px 30px;
+    height: 110px;
+    padding: 0px 0px 10px 20px;
 }
 
-.fundo_perfil .card_valores{
+.fundo_perfil .card_valores {
     box-shadow: var(--sombra);
     border-radius: 15px;
     height: 100px;
@@ -394,49 +416,78 @@ form input {
     width: 45%;
 }
 
-.card_valores p{
-    margin-top: 30px;
+.fundo_cards_adm {
+    background-color: lightgray;
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 120px;
+    min-width: 120px;
+    text-align: center;
+    margin-right: 20px;
+    margin-bottom: 10PX;
 }
 
-.faixa_dash{
+.taxa img {
+    width: 20px;
+}
+
+.adm_info {
+    margin-bottom: 10px;
+}
+
+.adms,
+.usuarios,
+.taxas {
+    flex-wrap: wrap;
+}
+
+.card_valores p {
+    margin-top: 0px;
+}
+
+.faixa_dash {
     background-color: var(--verde_medio);
     color: white;
     padding: 10px 20px;
+    z-index: 2;
 }
 
-.nav_dash{
+.dash_footer {
+    position: relative;
+    z-index: 2;
+}
+
+.nav_dash {
     min-width: 155px;
     width: 15%;
     box-shadow: var(--sombra);
+    position: relative;
+    z-index: 1;
 }
 
-.nav_dash a{
+.nav_dash a {
     margin: 10px 0;
     width: 140px;
     text-align: center;
 }
 
-.fundo_dash .card_valores{
+.fundo_dash .card_valores {
     width: 25%;
 }
 
-.saldo{
+.saldo {
     color: var(--azul_saldo);
 }
 
-.infos_dash{
+.infos_dash {
     width: 100%;
 }
 
-.infos_dash .container_cards{
-    width: 90%;
-}
-
-.selecionado{
+.selecionado {
     background-color: var(--verde_claro);
 }
 
-.card_historico{
+.card_historico {
     width: 95%;
     box-shadow: var(--sombra);
     border-radius: 15px;
@@ -444,16 +495,46 @@ form input {
     margin-top: 25px;
 }
 
-.dash_movimenta .card_valores{
+.dash_movimenta .card_valores {
     width: 45%;
+    margin: auto;
 }
 
-.dash_movimenta .container_cards{
-    width: 50%;
-    margin-left: 100px;
+.adicionar_despesa,
+.adicionar_receita {
+    font-size: 50px;
+    border-radius: 100%;
+    margin-right: 15px;
 }
 
-.sobre {
+div .adicionar_despesa {
+    color: var(--vermelho_destaque);
+}
+
+div .adicionar_receita {
+    color: var(--verde_claro);
+}
+
+.receitas,
+.despesas {
+    width: calc(65% - 15%);
+}
+
+.dash_movimenta .card_receita,
+.dash_movimenta .card_despesa {
+    width: 90%;
+    margin: 40px auto 10px;
+    background-color: white;
+    box-shadow: var(--sombra);
+    padding: 5px;
+    border-radius: 15px;
+}
+
+.dash_movimenta .editar img {
+    width: 30px;
+}
+
+/* .sobre {
     padding: 30px;
     justify-content: space-around;
     align-items: center;
@@ -474,10 +555,7 @@ form input {
 
 .sobre_items {
     margin: 10px;
-
-}
-
-/* Diogo 19/09/25 */
+} */
 
 .sobre {
     padding: 30px;
@@ -504,7 +582,8 @@ form input {
 }
 
 .divisor_items {
-    display: flex; gap: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 .cf_titulo {
@@ -512,18 +591,18 @@ form input {
 }
 
 .como_funciona {
-    justify-content: space-around;
     text-align: center;
+    justify-content: space-around;
 }
 
 .div_cf {
     display: flex;
     padding: 17px;
-    width: 25em;
-    height: 7em;
+    width: 30vw;
+    height: 10em;
     border: var(--verde_borda) solid;
     border-radius: 10px;
     flex-flow: row;
+    margin: 20px 0;
+    align-items: center;
 }
-
-/*  */
