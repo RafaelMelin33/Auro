@@ -1,0 +1,142 @@
+@media (max-width: 321px) {
+
+    .banner_infos h1,
+    .banner_infos p {
+        margin: 10px;
+    }
+
+    .banner_infos h1 {
+        font-size: 2.5em;
+    }
+
+    .banner_infos p {
+        font-size: 1.5em;
+        max-width: 320px;
+        width: 100%;
+    }
+
+    .banner_button {
+        font-size: 2em;
+        margin: 20px 20px;
+    }
+
+    .banner {
+        background-image: var(--gradient_fundo);
+        height: 300px;
+    }
+
+    .servicos {
+        flex-direction: column;
+    }
+
+    .servicos_h1 {
+        font-size: 2em;
+    }
+
+    .servicos img {
+        width: 50px;
+    }
+
+    .servicos p {
+        font-size: .9em;
+    }
+
+    .servico_card {
+        height: 250px;
+        width: 90vw;
+    }
+
+    .sobre {
+        display: block;
+    }
+
+    .sobre h1 {
+        text-align: center; 
+    }
+
+    .sobre_p {
+        max-width: 100vw;
+        text-align: justify;
+        margin: 20px 0;
+        font-size: 1em;
+    }
+
+    .fundo_sobre_items {
+        width: 80vw;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .como_funciona {
+        display: block;
+    }
+
+    .div_cf {
+        width: 90vw;
+        margin: 10px auto;
+    }
+
+    .footer_infos {
+        flex-direction: column;
+    }
+
+    .footer_endereco {
+        width: 90vw;
+    }
+
+    .footer_endereco p {
+        text-align: center;
+    }
+
+    .logo_footer {
+        width: 100vw;
+    }
+
+    .logo_footer img {
+        width: 60vw;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    footer span {
+        display: none;
+    }
+
+    footer nav a {
+        width: 90vw;
+        display: inline-block;
+        margin: 15px 0;
+    }
+}
+
+@media (max-width: 376px) {}
+
+@media (max-width: 426px) {
+    header {
+        flex-direction: column;
+    }
+
+    #nav {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: -300px;
+    }
+
+    #nav a {
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    #menu_hamburguer {
+        display: block;
+        height: 53px;
+    }
+
+    #menu_hamburguer img {
+        width: 50px;
+        height: 50px;
+    }
+}
