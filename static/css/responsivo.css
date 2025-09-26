@@ -1,4 +1,169 @@
-@media (max-width: 321px) {
+@media (max-width: 321px) {}
+
+@media (max-width: 376px) {
+    footer span {
+        display: none;
+    }
+
+    footer nav a {
+        width: 90vw;
+        display: inline-block;
+        margin: 15px 0;
+    }
+
+    .banner_infos h1,
+    .banner_infos p {
+        margin: 10px;
+    }
+
+    .banner_infos h1 {
+        font-size: 2.5em;
+    }
+
+    .banner_infos p {
+        font-size: 1.5em;
+        max-width: 320px;
+        width: 100%;
+    }
+
+    .banner_button {
+        font-size: 2em;
+        margin: 20px 20px;
+    }
+
+    .banner {
+        background-image: var(--gradient_fundo);
+        height: 300px;
+    }
+}
+
+@media (max-width: 426px) {
+
+    /* header */
+    header {
+        flex-direction: column;
+    }
+
+    #nav {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        box-shadow: 2px 6px 11px 0px #000000c7;
+        left: 0;
+    }
+
+    .fechado {
+        position: absolute;
+        animation: fecha .5s forwards;
+        left: -600px;
+        top: 136px;
+    }
+
+    .aberto {
+        position: sticky;
+        top: 136px;
+        animation: abre .5s forwards;
+        background-color: white;
+        width: 100vw;
+        z-index: 1;
+    }
+
+    .rodar {
+        animation: girar .5s forwards;
+    }
+
+    .rodar2 {
+        animation: girar2 .5s;
+    }
+
+    @keyframes girar {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(90deg);}
+    }
+
+    @keyframes girar2 {
+        from {transform: rotate(90deg);}
+        to {transform: rotate(0deg);}
+    }
+
+    @keyframes abre {
+        from {transform: translateX(-600px);}
+        to {transform: translateX(0px);}
+    }
+
+    @keyframes fecha {
+        from {transform: translateX(0);}
+        to {transform: translateX(-600px);}
+    }
+
+    #nav a {
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.2em;
+    }
+
+    #menu_hamburguer {
+        display: block;
+        height: 53px;
+    }
+
+    #menu_hamburguer img {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* .escuro {
+        height:100vh;
+        position: fixed;
+        top: 0px;
+        z-index: 1;
+        background-color: black;
+        width: 100vw;
+        opacity: .4;
+    } */
+
+    /* footer */
+    .footer_infos {
+        flex-direction: column;
+    }
+
+    .footer_endereco {
+        width: 90vw;
+    }
+
+    .footer_endereco p {
+        text-align: center;
+    }
+
+    .logo_footer {
+        width: 100vw;
+    }
+
+    .logo_footer img {
+        width: 40vw;
+        margin: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    footer .footer_nav {
+        margin-bottom: 20px;
+    }
+
+    footer nav a {
+        width: 90vw;
+        font-size: 1.23em;
+    }
+
+    footer>small>p {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    /* index */
+    .banner_infos div {
+        margin: auto;
+    }
 
     .banner_infos h1,
     .banner_infos p {
@@ -26,7 +191,7 @@
     }
 
     .servicos {
-        flex-direction: column;
+        flex-wrap: wrap;
     }
 
     .servicos_h1 {
@@ -48,10 +213,13 @@
 
     .sobre {
         display: block;
+        padding-top: 5px;
     }
 
-    .sobre h1 {
-        text-align: center; 
+    .sobre div h1 {
+        text-align: center;
+        margin-top: 0;
+        font-size: 2em;
     }
 
     .sobre_p {
@@ -76,101 +244,102 @@
         margin: 10px auto;
     }
 
-    .footer_infos {
+    .como_funciona h1 {
+        font-size: 2em;
+    }
+
+    .cf_dupla_div {
+        flex-wrap: wrap;
+    }
+
+    .como_funciona .cf_dupla_div .div_cf img {
+        width: 50px;
+    }
+
+    /* cadastro */
+    .fundo_sem_chapeu {
+        background-image: var(--gradient_fundo);
+    }
+
+    .fundo_sem_chapeu .fundo_form {
+        width: 90vw;
+        margin: auto;
+        left: 0;
+    }
+
+    .etapas_cadastro {
+        width: 90vw;
+        margin-bottom: 20px;
+        left: 0;
+    }
+
+    /* login */
+    .fundo_com_chapeu {
+        background-image: var(--gradient_fundo);
+    }
+
+    .fundo_com_chapeu .fundo_form {
+        width: 90vw;
+        margin: auto;
+        left: 0;
+    }
+
+    /* perfil */
+    .fundo_perfil .infos_perfil {
         flex-direction: column;
     }
 
-    .footer_endereco {
-        width: 90vw;
+    .fundo_perfil .infos_perfil div {
+        width: 100%;
+        margin-bottom: 20px;
     }
 
-    .footer_endereco p {
-        text-align: center;
+    .fundo_perfil .infos_perfil div div {
+        flex-wrap: wrap;
+        gap: 20px;
     }
 
-    .logo_footer {
+    .container_cards {
+        flex-direction: column;
+    }
+
+    .fundo_perfil .card_valores {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    /* dashboard */
+    .header_dash {
+        flex-direction: row;
+    }
+
+    .header_dash .aberto {
+        top: 83px;
         width: 100vw;
     }
 
-    .logo_footer img {
-        width: 60vw;
-        margin: auto;
-        display: flex;
-        justify-content: center;
-    }
-
-    footer span {
-        display: none;
-    }
-
-    footer nav a {
-        width: 90vw;
-        display: inline-block;
-        margin: 15px 0;
-    }
-}
-
-@media (max-width: 376px) {}
-
-@media (max-width: 426px) {
-    header {
-        flex-direction: column;
-    }
-
-    #nav {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: -300px;
-    }
-
-    #nav a {
-        margin: 10px 0;
-        text-align: center;
-        font-size: 1.2em;
-    }
-
-    .faixa_dash {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
     .nav_dash {
+        position: absolute;
+        z-index: 1;
+        box-shadow: none;
         width: 100%;
         background-color: white;
         left: -600px;
+        animation: abre .1s forwards;
     }
 
-    #menu_hamburguer, #menu_hamburguer2 {
+    #menu_hamburguer_dash {
         display: block;
         height: 53px;
+        margin: auto;
     }
 
-    #menu_hamburguer img, #menu_hamburguer2 img {
+    #menu_hamburguer_dash img {
         width: 50px;
         height: 50px;
     }
 
-    #menu_hamburguer2 {
-        justify-self: center;
-        align-self: center;
-    }
-
-    .card_valores {
-        width: 40%;
-    }
-
-    /* footer */
-    .footer_infos {
+    .fundo_dash{
         flex-direction: column;
     }
-
 }
-
-@media (max-width: 769px) {
-    .fundo_sem_chapeu .fundo_form, .fundo_com_chapeu .fundo_form , .etapas_cadastro {
-        width: 45%;
-    }
-}
-

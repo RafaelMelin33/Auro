@@ -85,7 +85,7 @@
     display: inline-block;
 }
 
-#menu_hamburguer {
+#menu_hamburguer, #menu_hamburguer_dash {
     display: none;
 }
 
@@ -187,7 +187,6 @@ h1 {
 .banner {
     height: 500px;
     background-image: url('../img/img_fundo_banner.png'), var(--gradient_fundo);
-    /* background-color: var(--verde_positivo); */
     background-position: right;
     background-repeat: no-repeat;
     background-size: contain;
@@ -195,7 +194,7 @@ h1 {
 
 .banner h1 {
     font-size: 5em;
-    width: 600px;
+    max-width: 600px;
     margin: 30px 0 0 100px;
 }
 
@@ -377,6 +376,23 @@ form input {
     color: white;
 }
 
+.div_senha{
+    text-align: right;
+}
+
+#olho_fechado_s, #olho_aberto_s, #olho_fechado_cs, #olho_aberto_cs{
+    width: 25px;
+    position: relative;
+    top: -30px;
+    right: 10px;
+    cursor: pointer;
+
+}
+
+#olho_aberto_s, #olho_aberto_cs{
+    display: none;
+}
+
 .fundo .fundo_perfil {
     background-color: white;
     width: 90%;
@@ -389,9 +405,18 @@ form input {
 .fundo_perfil .infos_perfil {
     width: 95%;
     margin: 30px auto 0;
-    background-color: lightgray;
+    background-color: white;
+    box-shadow: var(--sombra);
     padding: 10px;
     border-radius: 15px;
+}
+
+.fundo_perfil .infos_perfil div{
+    width: 45%;
+}
+
+.fundo_perfil .infos_perfil div div{
+    width: 80%;
 }
 
 .infos_perfil img{
@@ -407,7 +432,7 @@ form input {
 }
 
 .container_cards {
-    width: 80%;
+    width: 95%;
     margin: 40px auto 30px;
 }
 
@@ -559,7 +584,7 @@ form input {
     padding: 30px;
     justify-content: space-around;
     align-items: center;
-    height: 300px;
+    min-height: 300px;
 }
 
 .sobre div h1{
@@ -599,7 +624,6 @@ form input {
 
 .como_funciona {
     text-align: center;
-    justify-content: space-around;
 }
 
 .div_cf {
