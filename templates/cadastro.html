@@ -6,17 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - Cadastro</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
             <a href="index.html">Nossos serviços</a>
             <a href="index.html">Quem somos</a>
             <a href="index.html">Como funciona</a>
             <a href="login.html" id="logar">Acessar minha conta</a>
+            <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
 
@@ -82,7 +85,11 @@
                     <input type="email" name="email" id="email" placeholder="Digite seu email">
 
                     <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
+                    <div class="div_senha">
+                        <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
+                        <img src="../static/img/icon_olho_fechado.png" alt="icon olho fechado" id="olho_fechado_s" onclick="verSenha()">
+                        <img src="../static/img/icon_olho_aberto.png" alt="icon olho aberto" id="olho_aberto_s" onclick="verSenha()">
+                    </div>
 
                     <p class="erroSenha" id="especial">* Caracter especial</p>
                     <p class="erroSenha" id="numero">* Número</p>
@@ -90,7 +97,11 @@
                     <p class="erroSenha" id="minuscula">* Minúscula</p>
 
                     <label for="confirmaSenha">Confirmar senha</label>
-                    <input type="password" name="confirmaSenha" id="confirmaSenha" placeholder="Confirme sua senha">
+                    <div class="div_senha">
+                        <input type="password" name="confirmaSenha" id="confirmaSenha" placeholder="Confirme sua senha" oninput="senhasCoincidem()">
+                        <img src="../static/img/icon_olho_fechado.png" alt="icon olho fechado" id="olho_fechado_cs" onclick="verConfirmaSenha()">
+                        <img src="../static/img/icon_olho_aberto.png" alt="icon olho aberto" id="olho_aberto_cs" onclick="verConfirmaSenha()">
+                    </div>
 
                     <p class="erroSenha" id="senhasNaoCoincidem">* Senhas não coincidem</p>
 
@@ -123,16 +134,16 @@
                 <h2 class="d-flex center">Confirme seus dados</h2>
                 <form>
                     <label for="confirmaNome">Nome</label>
-                    <input type="text" id="confirmaNome" placeholder="Confirme seu nome">
+                    <input type="text" name="confirmaNome" id="confirmaNome" placeholder="Confirme seu nome">
 
                     <label for="confirmaCpf">CPF</label>
-                    <input type="number" id="confirmaCpf" placeholder="Confirme seu cpf">
+                    <input type="number" name="confirmaCpf" id="confirmaCpf" placeholder="Confirme seu cpf">
 
                     <label for="confirmaDataNascimento">Data de nascimento</label>
-                    <input type="date" id="confirmaDataNascimento">
+                    <input type="date" name="confirmaDataNascimento" id="confirmaDataNascimento">
 
                     <label for="confirmaEmail">Email</label>
-                    <input type="email" id="confirmaEmail" placeholder="Confirme seu email">
+                    <input type="email" name="confirmaEmail" id="confirmaEmail" placeholder="Confirme seu email">
 
                     <div class="d-flex between">
                         <button type="submit">Cadastrar</button>

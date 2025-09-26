@@ -13,9 +13,8 @@
 <body>
     <header class="d-flex between">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
-                alt="icone menu hamburguer"></button>
-        <nav class="d-flex around" id="nav">
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
             <a href="#servicos">Nossos serviços</a>
             <a href="#sobre">Quem somos</a>
             <a href="#como_funciona">Como funciona</a>
@@ -87,9 +86,10 @@
                 </div>
             </div>
         </section>
-        <h1 class="cf_titulo">Como funciona</h1>
-        <section class="como_funciona d-flex" id="como_funciona">
-            <div class="cf_dupla_div">
+        
+        <section class="como_funciona" id="como_funciona">
+            <h1 class="cf_titulo">Como funciona</h1>
+            <div class="cf_dupla_div d-flex around">
                 <div class="div_cf">
                     <div>
                         <img src="../static/img/icone_cadastro.png" alt="icon cadastro">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sobre_dupla_div">
+            <div class="cf_dupla_div d-flex around">
                 <div class="div_cf">
                     <div>
                         <img src="../static/img/icone_analise.png" alt="icon analise">
@@ -159,26 +159,7 @@
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script>
-        let aberto = 0
-        function menu() {
-            let nav = document.getElementById('nav')
-            let btn = document.getElementById('menu_hamburguer')
-
-            if (aberto == 0) {
-                nav.style.position = 'relative'
-                nav.style.top = '0'
-                btn.style.transform = 'rotate(90deg)'
-                aberto = 1
-            } else {
-                nav.style.position = 'absolute'
-                nav.style.top = '-300px'
-                btn.style.transform = 'rotate(180deg)'
-                btn.style.animation = 'none'
-                aberto = 0
-            }
-        }
-    </script>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>

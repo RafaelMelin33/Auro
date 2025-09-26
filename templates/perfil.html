@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - login</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
             <a href="index.html">Nossos serviços</a>
             <a href="index.html">Quem somos</a>
             <a href="index.html">Como funciona</a>
@@ -28,9 +31,13 @@
                 <h2>Bem-vindo 'usuário'</h2>
                 <hr>
                 <div class="infos_perfil d-flex around">
-                    <p>Nome do usuário</p>
-                    <p>Data de nascimento</p>
-                    <a href="editar_usuario.html"><img src="../static/img/editar_icon.png" alt="icone editar"></a>
+                    <div class="d-flex between">
+                        <div class="d-flex between">
+                            <p>Nome do usuário</p>
+                            <p>Data de nascimento</p>
+                        </div>
+                        <a href="editar_usuario.html"><img src="../static/img/editar_icon.png" alt="icone editar"></a>
+                    </div>
                     <a href="dashboard.html" class="btn">Ir para dashboard</a>
                 </div>
 
@@ -74,6 +81,7 @@
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>
