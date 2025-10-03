@@ -29,6 +29,23 @@
     /* Cor da letra de valores negativos */
     --azul_saldo: #121BCE;
     /* Cor azul do saldo */
+    --preto: black;
+    --borda-raio: 15px;
+    /* Raio da borda */
+    --font-titulo: 3em;
+    /* Tamanho da fonte do título */
+    --font-texto: 1.3em;
+    /* Tamanho da fonte do texto */
+    --font-titulo-responsivo: 2.5em;
+    /* Tamanho da fonte do título responsivo */
+    --font-texto-responsivo: 1.1em;
+    /* Tamanho da fonte do texto responsivo */
+    --width-form: 30%;
+    /* Largura do formulário */
+    --width-form-responsivo: 90vw;
+    /* Largura do formulário responsivo */
+    --transicao: .5s;
+    /* Duração da transição */
 }
 
 * {
@@ -38,6 +55,11 @@
     text-decoration: none;
     font-family: 'nunito';
 }
+
+/* *:hover{
+    rotate: 360deg;
+    transition: 2s;
+} */
 
 .d-flex {
     display: flex;
@@ -81,11 +103,18 @@
     color: white;
     background-color: var(--verde_botao);
     padding: 10px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     display: inline-block;
+    transition: var(--transicao);
 }
 
-#menu_hamburguer, #menu_hamburguer_dash {
+.btn:hover {
+    background-color: var(--verde_medio);
+    transition: var(--transicao);
+}
+
+#menu_hamburguer,
+#menu_hamburguer_dash {
     display: none;
 }
 
@@ -98,14 +127,28 @@ header nav {
 }
 
 header nav a {
-    color: black;
+    color: var(--preto);
+    transition: var(--transicao);
+    padding: 10px;
+    border-radius: var(--borda-raio);
+}
+
+header nav a:hover {
+    background-color: var(--verde_medio);
+    color: white;
+    transition: var(--transicao);
+    border-radius: var(--borda-raio);
 }
 
 header nav #logar {
     background-color: var(--verde_botao);
     color: white;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: var(--borda-raio);
+}
+
+header nav #logar:hover {
+    background-color: var(--verde_medio);
 }
 
 header nav div {
@@ -118,6 +161,7 @@ header nav #perfil {
     width: 60px;
     height: 60px;
     display: inline-block;
+    padding: 0;
 }
 
 header nav #perfil img {
@@ -128,8 +172,6 @@ header nav #perfil img {
 header nav div a {
     display: inline-block;
 }
-
-main {}
 
 footer {
     background-color: var(--verde_medio);
@@ -163,16 +205,29 @@ footer nav a,
 footer nav span {
     margin: 0 5px;
     color: white;
+    transition: var(--transicao);
+}
+
+footer nav a:hover {
+    padding: 20px;
+    transition: var(--transicao);
 }
 
 footer>small>p {
     text-align: right;
     width: 100%;
     padding-right: 10px;
+    margin-top: 15px;
 }
 
 footer .redes {
     width: 30px;
+}
+
+.footer_endereco p {
+    margin: 5px 0;
+    text-align: center;
+    font-size: var(--font-texto-responsivo);
 }
 
 h1 {
@@ -218,7 +273,12 @@ h1 {
     display: inline-block;
     font-size: 2.2em;
     margin: 50px 0 0 100px;
-    ;
+    transition: var(--transicao);
+}
+
+.banner_button:hover {
+    scale: 1.1;
+    transition: var(--transicao);
 }
 
 .servicos {
@@ -230,7 +290,7 @@ h1 {
 
 .servicos_h1 {
     margin: 10px 0 20px 0;
-    font-size: 3em;
+    font-size: var(--font-titulo);
     text-align: center;
     color: var(--verde_banner);
 }
@@ -243,7 +303,7 @@ h1 {
     width: 25%;
     margin: auto;
     margin-bottom: 30px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     box-shadow: var(--sombra);
 }
 
@@ -273,37 +333,38 @@ h1 {
 
 .fundo_sem_chapeu,
 .fundo_com_chapeu {
-    background-size: cover;
     min-height: calc(100vh - 84px - 183px);
     display: flex;
     align-items: center;
     padding: 20px 0;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .fundo .fundo_form {
     background-color: white;
     padding: 10px;
-    width: 30%;
-    border-radius: 15px;
-    color: black;
+    width: var(--width-form);
+    border-radius: var(--borda-raio);
+    color: var(--preto);
 }
 
 .fundo_com_chapeu .fundo_form {
     background-color: white;
     padding: 10px;
-    width: 30%;
+    width: var(--width-form);
     left: 100px;
     position: relative;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
 }
 
 .fundo_sem_chapeu .fundo_form {
     background-color: white;
     padding: 10px;
-    width: 30%;
+    width: var(--width-form);
     left: calc(37.5% - 100px);
     position: relative;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
 }
 
 .fundo_form a:visited {
@@ -318,14 +379,49 @@ form a {
     width: 100%;
     border: none;
     padding: 10px 5px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
+}
+
+form button:hover {
+    background-color: var(--verde_medio);
+    transition: var(--transicao);
+}
+
+form .btn_cancelar {
+    color: var(--vermelho_destaque);
+    border: 2px solid var(--vermelho_negativo);
+    width: 97%;
+    margin: 10px auto;
+    font-size: 20px;
+    transition: var(--transicao);
+}
+
+form .btn_cancelar:hover{
+    background-color: var(--vermelho_negativo);
+    color: white;
+    transition: var(--transicao);
+}
+form .btn_cancelar:hover:visited{
+    background-color: var(--vermelho_negativo);
+    color: white;
+    transition: var(--transicao);
+}
+
+form .btn_cancelar:visited {
+    color: var(--vermelho_destaque);
+    transition: var(--transicao);
+}
+
+.login_perfil_adm {
+    color: black;
 }
 
 form button {
     background-color: var(--verde_botao);
     color: white;
-    font-size: 1.2em;
+    font-size: var(--font-texto);
     margin-top: 10px;
+    transition: var(--transicao);
 }
 
 form input {
@@ -376,11 +472,14 @@ form input {
     color: white;
 }
 
-.div_senha{
+.div_senha {
     text-align: right;
 }
 
-#olho_fechado_s, #olho_aberto_s, #olho_fechado_cs, #olho_aberto_cs{
+#olho_fechado_s,
+#olho_aberto_s,
+#olho_fechado_cs,
+#olho_aberto_cs {
     width: 25px;
     position: relative;
     top: -30px;
@@ -389,17 +488,18 @@ form input {
 
 }
 
-#olho_aberto_s, #olho_aberto_cs{
+#olho_aberto_s,
+#olho_aberto_cs {
     display: none;
 }
 
 .fundo .fundo_perfil {
     background-color: white;
     width: 90%;
-    color: black;
+    color: var(--preto);
     margin: auto;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
 }
 
 .fundo_perfil .infos_perfil {
@@ -408,18 +508,18 @@ form input {
     background-color: white;
     box-shadow: var(--sombra);
     padding: 10px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
 }
 
-.fundo_perfil .infos_perfil div{
+.fundo_perfil .infos_perfil div {
     width: 45%;
 }
 
-.fundo_perfil .infos_perfil div div{
+.fundo_perfil .infos_perfil div div {
     width: 80%;
 }
 
-.infos_perfil img{
+.infos_perfil img {
     width: 30px;
 }
 
@@ -438,14 +538,14 @@ form input {
 
 .card_valores {
     box-shadow: var(--sombra);
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     height: 100px;
     padding: 10px 0 10px 30px;
 }
 
 .fundo_perfil .card_valores {
     box-shadow: var(--sombra);
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     height: 100px;
     padding: 10px 0 10px 30px;
     width: 45%;
@@ -454,7 +554,7 @@ form input {
 .fundo_cards_adm {
     background-color: lightgray;
     padding: 10px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     max-width: 120px;
     min-width: 120px;
     text-align: center;
@@ -476,22 +576,35 @@ form input {
     flex-wrap: wrap;
 }
 
-.adicionar_taxa, .adicionar_adm{
+.adicionar_taxa,
+.adicionar_adm {
     border-radius: 100%;
-    border: 1px solid black;
-    padding: 2px 8px;
+    border: 1px solid var(--preto);
+    padding: 0 8px;
     font-size: 1.5em;
-    margin-left: 10px;
+    margin: 2px 0 10px 10px;
     display: inline-block;
-    color: black;
+    color: var(--preto);
 }
 
-.cadastrar_adm{
-    margin: auto;
+.cadastrar_adm {
+    margin: 50px auto 50px auto;
+}
+
+.adm_info div a {
+    color: var(--preto);
 }
 
 .card_valores p {
     margin-top: 30px;
+}
+
+.grafico {
+    width: 100%;
+}
+
+.grafico img {
+    width: 60%;
 }
 
 .faixa_dash {
@@ -506,9 +619,9 @@ form input {
     box-shadow: 5px 0 5px -1px lightgray;
 }
 
-.nav_dash a {
+.nav_dash a, .nav_dash_outra a {
     margin: 10px 0;
-    width: 140px;
+    min-width: 140px;
     text-align: center;
 }
 
@@ -529,11 +642,15 @@ form input {
 }
 
 .card_historico {
-    width: 95%;
+    width: 85%;
     box-shadow: var(--sombra);
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     padding: 15px;
     margin-top: 25px;
+}
+
+.aparece_c {
+    display: none;
 }
 
 .dash_movimenta .card_valores {
@@ -549,10 +666,22 @@ form input {
 
 .adicionar_despesa {
     color: var(--vermelho_destaque);
+    transition: var(--transicao);
+}
+
+.adicionar_despesa:hover {
+    color: #b64040;
+    transition: var(--transicao);
 }
 
 .adicionar_receita {
     color: var(--verde_destraque);
+    transition: var(--transicao);
+}
+
+.adicionar_receita:hover {
+    color: #309c30;
+    transition: var(--transicao);
 }
 
 .receitas,
@@ -566,17 +695,17 @@ form input {
     margin: 20px auto;
     box-shadow: var(--sombra);
     padding: 5px;
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
 }
 
 .dash_movimenta .editar img {
     width: 30px;
 }
 
-.emprestimo{
+.emprestimo {
     width: 30vw;
     box-shadow: var(--sombra);
-    border-radius: 15px;
+    border-radius: var(--borda-raio);
     padding: 10px;
 }
 
@@ -587,18 +716,18 @@ form input {
     min-height: 300px;
 }
 
-.sobre div h1{
-    font-size: 3em;
+.sobre div h1 {
+    font-size: var(--font-titulo);
 }
 
 .sobre_p {
     max-width: 50%;
-    font-size: 1.3em;
+    font-size: var(--font-texto);
 }
 
 .fundo_sobre_items {
     display: flex;
-    color: black;
+    color: var(--preto);
     width: 350px;
     background-color: white;
     height: 130px;
@@ -611,14 +740,19 @@ form input {
 }
 
 .divisor_items {
-    display: flex;
+    width: 100%;
     gap: 10px;
+}
+
+.sobre_items{
+    width: 50%;
+    text-align: center;
 }
 
 .cf_titulo {
     margin-top: 5px;
     text-align: center;
-    font-size: 3em;
+    font-size: var(--font-titulo);
     color: var(--verde_banner);
 }
 
@@ -636,4 +770,55 @@ form input {
     flex-flow: row;
     margin: 20px 0;
     align-items: center;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes girar2 {
+    from {
+        transform: rotate(90deg);
+    }
+
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes abre {
+    from {
+        transform: translateX(-600px);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes fecha {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-600px);
+    }
+}
+
+
+/* remover depois */
+
+.fundo_form h2 a {
+    color: black;
+}
+
+.fundo_form h2 a:visited {
+    color: black;
 }
