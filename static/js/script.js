@@ -1,164 +1,143 @@
-// Função para exibir a etapa 1 e ocultar as demais
+// Exibe a etapa 1 do formulário e esconde as demais
 function irEtapa1() {
-    // Exibe o elemento com id 'etapa1' usando display flex
-    document.getElementById("etapa1").style.display = 'flex';
-    // Oculta o elemento com id 'etapa2'
-    document.getElementById("etapa2").style.display = 'none';
-    // Oculta o elemento com id 'etapa3'
-    document.getElementById("etapa3").style.display = 'none';
+    document.getElementById("etapa1").style.display = 'flex'; // Mostra etapa 1
+    document.getElementById("etapa2").style.display = 'none'; // Esconde etapa 2
+    document.getElementById("etapa3").style.display = 'none'; // Esconde etapa 3
 }
 
-// Função para exibir a etapa 2 e ocultar as demais
+// Exibe a etapa 2 do formulário e esconde as demais
 function irEtapa2() {
-    // Oculta o elemento com id 'etapa1'
-    document.getElementById("etapa1").style.display = 'none';
-    // Exibe o elemento com id 'etapa2' usando display flex
-    document.getElementById("etapa2").style.display = 'flex';
-    // Oculta o elemento com id 'etapa3'
-    document.getElementById("etapa3").style.display = 'none';
+    document.getElementById("etapa1").style.display = 'none'; // Esconde etapa 1
+    document.getElementById("etapa2").style.display = 'flex'; // Mostra etapa 2
+    document.getElementById("etapa3").style.display = 'none'; // Esconde etapa 3
 }
 
-// Função para exibir a etapa 3 e ocultar as demais
+// Exibe a etapa 3 do formulário e esconde as demais
 function irEtapa3() {
-    // Oculta o elemento com id 'etapa1'
-    document.getElementById("etapa1").style.display = 'none';
-    // Oculta o elemento com id 'etapa2'
-    document.getElementById("etapa2").style.display = 'none';
-    // Exibe o elemento com id 'etapa3' usando display flex
-    document.getElementById("etapa3").style.display = 'flex';
+    document.getElementById("etapa1").style.display = 'none'; // Esconde etapa 1
+    document.getElementById("etapa2").style.display = 'none'; // Esconde etapa 2
+    document.getElementById("etapa3").style.display = 'flex'; // Mostra etapa 3
 }
 
-// Validação dinâmica da senha: verifica se contém minúscula, maiúscula, número e caractere especial
-document.getElementById('senha').addEventListener('input',function () {
-    // Pega o valor digitado no campo senha
-    var senha = this.value;
+// Valida os requisitos da senha enquanto o usuário digita
+document.getElementById('senha').addEventListener('input', function () {
+    var senha = this.value; // Obtém o valor digitado
     // Inicialmente, todos os requisitos ficam vermelhos
-    document.getElementById('minuscula').style.color = 'red'; // Requisito de minúscula
-    document.getElementById('maiuscula').style.color = 'red'; // Requisito de maiúscula
-    document.getElementById('numero').style.color = 'red';    // Requisito de número
-    document.getElementById('especial').style.color = 'red';  // Requisito de caractere especial
-    // Percorre cada caractere da senha e valida os requisitos
+    document.getElementById('minuscula').style.color = 'red';
+    document.getElementById('maiuscula').style.color = 'red';
+    document.getElementById('numero').style.color = 'red';
+    document.getElementById('especial').style.color = 'red';
+    // Percorre cada caractere da senha
     for (let i = 0; i < senha.length; i++) {
-        const caractere = senha[i]; // Pega o caractere atual
-        // Se for minúscula, muda cor do requisito para verde
+        const caractere = senha[i];
+        // Se encontrar letra minúscula, muda cor para verde
         if (caractere >= 'a' && caractere <= 'z') {
             document.getElementById('minuscula').style.color = 'green';
-        // Se for maiúscula, muda cor do requisito para verde
+            // Se encontrar letra maiúscula, muda cor para verde
         } else if (caractere >= 'A' && caractere <= 'Z') {
             document.getElementById('maiuscula').style.color = 'green';
-        // Se for número, muda cor do requisito para verde
+            // Se encontrar número, muda cor para verde
         } else if (caractere >= '0' && caractere <= '9') {
             document.getElementById('numero').style.color = 'green';
-        // Se for caractere especial, muda cor do requisito para verde
+            // Se encontrar caractere especial, muda cor para verde
         } else if ('!@#$%^&*()_+[]{}|;:,.<>?'.includes(caractere)) {
             document.getElementById('especial').style.color = 'green';
         }
     }
-    // Chama função para verificar se as senhas coincidem
-    senhasCoincidem();
+    senhasCoincidem(); // Chama função para verificar se as senhas coincidem
 });
 
-// Função para verificar se os campos de senha e confirmação de senha são iguais
+// Verifica se os campos de senha e confirmação são iguais
 function senhasCoincidem() {
-    // Pega o valor do campo senha
-    var senha = document.getElementById('senha').value;
-    // Pega o valor do campo confirmação de senha
-    var confirmarSenha = document.getElementById('confirmaSenha').value;
-    // Por padrão, mostra mensagem de erro em vermelho
-    document.getElementById('senhasNaoCoincidem').style.color = 'red';
-    // Se as senhas forem iguais, muda a cor para verde
+    var senha = document.getElementById('senha').value; // Valor da senha
+    var confirmarSenha = document.getElementById('confirmaSenha').value; // Valor da confirmação
+    document.getElementById('senhasNaoCoincidem').style.color = 'red'; // Inicialmente vermelho
+    // Se as senhas forem iguais, muda cor para verde
     if (senha == confirmarSenha) {
         document.getElementById('senhasNaoCoincidem').style.color = 'green';
     }
 }
 
-// Alterna a visualização da senha (mostrar/ocultar)
+// Alterna a visualização do campo de senha (mostrar/ocultar)
 function verSenha() {
-    // Pega o input da senha
-    var senhaInput = document.getElementById('senha');
-    // Pega o ícone de olho fechado
-    var olhoFechado = document.getElementById('olho_fechado_s');
-    // Pega o ícone de olho aberto
-    var olhoAberto = document.getElementById('olho_aberto_s');
+    var senhaInput = document.getElementById('senha'); // Campo senha
+    var olhoFechado = document.getElementById('olho_fechado_s'); // Ícone olho fechado
+    var olhoAberto = document.getElementById('olho_aberto_s'); // Ícone olho aberto
 
-    // Se o tipo do input for password, mostra a senha
+    // Se o campo está oculto, mostra a senha
     if (senhaInput.type === 'password') {
-        senhaInput.type = 'text'; // Troca para texto
-        olhoFechado.style.display = 'none'; // Esconde o olho fechado
-        olhoAberto.style.display = 'inline'; // Mostra o olho aberto
+        senhaInput.type = 'text';
+        olhoFechado.style.display = 'none';
+        olhoAberto.style.display = 'inline';
+        // Se o campo está visível, oculta a senha
     } else {
-        // Se já estiver mostrando, volta para password
         senhaInput.type = 'password';
-        olhoFechado.style.display = 'inline'; // Mostra o olho fechado
-        olhoAberto.style.display = 'none'; // Esconde o olho aberto
+        olhoFechado.style.display = 'inline';
+        olhoAberto.style.display = 'none';
     }
 }
 
-// Alterna a visualização da confirmação de senha (mostrar/ocultar)
+// Alterna a visualização do campo de confirmação de senha (mostrar/ocultar)
 function verConfirmaSenha() {
-    // Pega o input de confirmação de senha
-    var confirmaSenhaInput = document.getElementById('confirmaSenha');
-    // Pega o ícone de olho fechado
-    var olhoFechado = document.getElementById('olho_fechado_cs');
-    // Pega o ícone de olho aberto
-    var olhoAberto = document.getElementById('olho_aberto_cs');
+    var confirmaSenhaInput = document.getElementById('confirmaSenha'); // Campo confirmação
+    var olhoFechado = document.getElementById('olho_fechado_cs'); // Ícone olho fechado
+    var olhoAberto = document.getElementById('olho_aberto_cs'); // Ícone olho aberto
 
-    // Se o tipo do input for password, mostra a senha
+    // Se o campo está oculto, mostra a senha
     if (confirmaSenhaInput.type === 'password') {
-        confirmaSenhaInput.type = 'text'; // Troca para texto
-        olhoFechado.style.display = 'none'; // Esconde o olho fechado
-        olhoAberto.style.display = 'inline'; // Mostra o olho aberto
+        confirmaSenhaInput.type = 'text';
+        olhoFechado.style.display = 'none';
+        olhoAberto.style.display = 'inline';
+        // Se o campo está visível, oculta a senha
     } else {
-        // Se já estiver mostrando, volta para password
         confirmaSenhaInput.type = 'password';
-        olhoFechado.style.display = 'inline'; // Mostra o olho fechado
-        olhoAberto.style.display = 'none'; // Esconde o olho aberto
+        olhoFechado.style.display = 'inline';
+        olhoAberto.style.display = 'none';
     }
 }
 
-
-// Função para alternar o menu hamburguer (abrir/fechar menu principal)
+// Alterna o menu hamburguer entre aberto e fechado
 function menu() {
-    let aberto = 0 // Variável para controlar o estado do menu (não é persistente entre execuções)
-    let btn = document.getElementById('menu_hamburguer'); // Botão do menu hamburguer
-    let nav = document.getElementById('nav'); // Elemento de navegação principal
+    let aberto = 0 // Estado inicial do menu
+    let btn = document.getElementById('menu_hamburguer'); // Botão do menu
+    let nav = document.getElementById('nav'); // Elemento de navegação
 
-    // Se o menu está fechado, abre o menu
+    // Se o menu está fechado, abre
     if (aberto == 0 && nav.classList.contains('fechado')) {
-        nav.classList.remove('fechado'); // Remove classe de fechado
-        nav.classList.add('aberto');     // Adiciona classe de aberto
-        btn.classList.remove('rodar2'); // Remove animação de fechar
-        btn.classList.add('rodar');     // Adiciona animação de abrir
-        aberto = 1;                     // Marca como aberto
-    // Se o menu está aberto, fecha o menu
+        nav.classList.remove('fechado');
+        nav.classList.add('aberto');
+        btn.classList.remove('rodar2');
+        btn.classList.add('rodar');
+        aberto = 1;
+        // Se o menu está aberto, fecha
     } else if (aberto == 0 && nav.classList.contains('aberto')) {
-        nav.classList.remove('aberto'); // Remove classe de aberto
-        nav.classList.add('fechado');   // Adiciona classe de fechado
-        btn.classList.remove('rodar');  // Remove animação de abrir
-        btn.classList.add('rodar2');    // Adiciona animação de fechar
-        aberto = 0;                     // Marca como fechado
+        nav.classList.remove('aberto');
+        nav.classList.add('fechado');
+        btn.classList.remove('rodar');
+        btn.classList.add('rodar2');
+        aberto = 0;
     }
 }
 
-// Função para alternar o menu hamburguer do dashboard (abrir/fechar menu lateral)
+// Alterna o menu do dashboard entre aberto e fechado
 function menuDash() {
-    let aberto = 0 // Variável para controlar o estado do menu (não é persistente entre execuções)
-    let btn = document.getElementById('menu_hamburguer_dash'); // Botão do menu hamburguer do dashboard
-    let nav = document.getElementById('nav_dash'); // Elemento de navegação do dashboard
+    let aberto = 0 // Estado inicial do menu
+    let btn_dash = document.getElementById('menu_hamburguer_dash'); // Botão do menu dashboard
+    let nav_dash = document.getElementById('nav_dash'); // Elemento de navegação dashboard
 
-    // Se o menu está fechado, abre o menu
-    if (aberto == 0 && nav.classList.contains('fechado')) {
-        nav.classList.remove('fechado'); // Remove classe de fechado
-        nav.classList.add('aberto');     // Adiciona classe de aberto
-        btn.classList.remove('rodar2'); // Remove animação de fechar
-        btn.classList.add('rodar');     // Adiciona animação de abrir
-        aberto = 1;                     // Marca como aberto
-    // Se o menu está aberto, fecha o menu
-    } else if (aberto == 0 && nav.classList.contains('aberto')) {
-        nav.classList.remove('aberto'); // Remove classe de aberto
-        nav.classList.add('fechado');   // Adiciona classe de fechado
-        btn.classList.remove('rodar');  // Remove animação de abrir
-        btn.classList.add('rodar2');    // Adiciona animação de fechar
-        aberto = 0;                     // Marca como fechado
+    // Se o menu está fechado, abre
+    if (aberto == 0 && nav_dash.classList.contains('fechado')) {
+        nav_dash.classList.remove('fechado');
+        nav_dash.classList.add('aberto');
+        btn_dash.classList.remove('rodar2');
+        btn_dash.classList.add('rodar');
+        aberto = 1;
+        // Se o menu está aberto, fecha
+    } else if (aberto == 0 && nav_dash.classList.contains('aberto')) {
+        nav_dash.classList.remove('aberto');
+        nav_dash.classList.add('fechado');
+        btn_dash.classList.remove('rodar');
+        btn_dash.classList.add('rodar2');
+        aberto = 0;
     }
 }
