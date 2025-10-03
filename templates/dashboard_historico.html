@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
+    <title>Auro - dashboard histórico</title>
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
@@ -13,12 +13,11 @@
 <body>
     <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
-                alt="icone menu hamburguer"></button>
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="#servicos">Nossos serviços</a>
-            <a href="#sobre">Quem somos</a>
-            <a href="#como_funciona">Como funciona</a>
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
             <div class="d-flex center">
                 <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
                 <a href="index.html" id="logar">Sair</a>
@@ -26,11 +25,13 @@
         </nav>
     </header>
     <main>
-        <div class="faixa_dash">
+        <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
+                    alt="icone menu hamburguer"></button>
         </div>
         <section class="d-flex fundo_dash formata_altura">
-            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+            
             <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
                 <a href="dashboard.html" class="btn">Geral</a>
                 <a href="dashboard_simulacao.html" class="btn">Simulação</a>
@@ -43,48 +44,45 @@
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
                     <div class="card_historico d-flex between">
                         <p>R$0,00</p>
                         <p>Risco: baixo</p>
-                        <p>Data de vencimento: 01/01/2025</p>
+                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
                     </div>
-                </div>
-                <div>
-                    <!-- Aqui vai um gráfico -->
                 </div>
             </div>
         </section>
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -102,9 +100,9 @@
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>

@@ -6,23 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - editarusuario</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
-    <header class="d-flex between">
+    <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
-                     <div class="d-flex center">
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
+            <div class="d-flex center">
                 <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+                <a href="index.html" id="logar">Sair</a>
             </div>
-            <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
     <main>
+        <div class="faixa_dash d-flex between">
+            <h2>Dashboard</h2>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
+                    alt="icone menu hamburguer"></button>
+        </div>
+        <div>
+            <nav class="nav_dash_outra d-flex around fechado" id="nav_dash">
+                <a href="dashboard.html" class="btn">Geral</a>
+                <a href="dashboard_simulacao.html" class="btn">Simulação</a>
+                <a href="dashboard_historico.html" class="btn">Histórico</a>
+                <a href="dashboard_movimentacoes.html" class="btn">Movimentações</a>
+            </nav>
+        </div>
         <section class="fundo_com_chapeu">
             <div class="fundo_form">
                 <h2 class="d-flex center">Editar despesas</h2>
@@ -33,14 +49,15 @@
                     <input type="number" name="valor" id="valor">
                     <label for="data">Data</label>
                     <input type="date" name="data" id="data">
-                    <button type="submit">Editar Despesa</button>
+                    <a href="dashboard_movimentacoes.html"><button type="button">Editar Despesa</button></a>
+                    <a class="d-flex center btn_cancelar" href="dashboard_movimentacoes.html">Cancelar</a>
                 </form>
             </div>
         </section>
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -58,13 +75,14 @@
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>

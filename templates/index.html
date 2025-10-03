@@ -13,7 +13,9 @@
 <body>
     <header class="d-flex between">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+        <button onclick="menu()" id="menu_hamburguer">
+            <img src="../static/img/icon_menu_hamburguer.png" alt="Icon menu hamburguer">
+        </button>
         <nav class="d-flex around fechado" id="nav">
             <a href="#servicos">Nossos serviços</a>
             <a href="#sobre">Quem somos</a>
@@ -69,7 +71,7 @@
             </div>
             <div>
                 <div class="fundo_sobre_items d-flex center column">
-                    <div class="divisor_items">
+                    <div class="divisor_items d-flex around">
                         <div class="sobre_items">
                             <h3>100%</h3>
                             <p>Precisão nos cálculos</p>
@@ -79,9 +81,15 @@
                             <p>Disponibilidade</p>
                         </div>
                     </div>
-                    <div class="sobre_items">
-                        <h3>100%</h3>
-                        <p>Segurança</p>
+                    <div class="divisor_items d-flex around">
+                        <div class="sobre_items">
+                            <h3>100%</h3>
+                            <p>Segurança</p>
+                        </div>
+                        <div class="sobre_items">
+                            <h3>200.000</h3>
+                            <p>Clientes atendidos</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,7 +142,7 @@
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">

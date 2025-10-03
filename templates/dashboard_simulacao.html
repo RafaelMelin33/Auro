@@ -6,16 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - login</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
-    <header class="d-flex between">
+    <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
             <div class="d-flex center">
                 <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
                 <a href="index.html" id="logar">Sair</a>
@@ -23,11 +26,13 @@
         </nav>
     </header>
     <main>
-        <div class="faixa_dash">
+        <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
+                    alt="icone menu hamburguer"></button>
         </div>
         <section class="d-flex fundo_dash formata_altura">
-            <nav class="nav_dash d-flex column center around">
+            <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
                 <a href="dashboard.html" class="btn">Geral</a>
                 <a href="dashboard_simulacao.html" class="btn selecionado">Simulação</a>
                 <a href="dashboard_historico.html" class="btn">Histórico</a>
@@ -46,7 +51,7 @@
                             <input type="number" name="parcelas" id="parcelas" placeholder="Quantidade de parcelas">
                             <label for="data">Data</label>
                             <input type="date" name="data" id="data">
-                            <button>Simular empréstimo</button>
+                            <button id="btn_simular">Simular empréstimo</button>
                         </form>
                     </div>
                     
@@ -56,13 +61,13 @@
 
                         <form action="">
                             <label for="valor_mensal">Valor Mensal</label>
-                            <input type="text" name="valor_mensal" id="valor_mensal">
+                            <input type="text" name="valor_mensal" id="valor_mensal" disabled>
                             <label for="valor_total">Valor Total</label>
-                            <input type="text" name="valor_total" id="valor_total">
+                            <input type="text" name="valor_total" id="valor_total" disabled>
                             <label for="comprometimento">Comprometimento</label>
-                            <input type="text" name="comprometimento" id="comprometimento">
+                            <input type="text" name="comprometimento" id="comprometimento" disabled>
                             <label for="riscos">Riscos</label>
-                            <input type="text" name="riscos" id="riscos">
+                            <input type="text" name="riscos" id="riscos" disabled>
                             <button>Confirmar</button>
                         </form>
                     </div>
@@ -71,7 +76,7 @@
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -89,9 +94,9 @@
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>

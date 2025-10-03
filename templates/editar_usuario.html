@@ -6,20 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - editarusuario</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
-    <header class="d-flex between">
+    <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
-                     <div class="d-flex center">
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
+            <div class="d-flex center">
                 <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+                <a href="index.html" id="logar">Sair</a>
             </div>
-            <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
     <main>
@@ -37,14 +40,15 @@
                     <input type="email" name="email" id="email" placeholder="Digite seu email">
                     <label for="data_nascimento">Data de Nascimento</label>
                     <input type="date" name="data_nascimento" id="data_nascimento">
-                    <button type="submit">Editar Perfil</button>
+                    <a href="perfil.html"><button type="button">Editar Perfil</button></a>
+                    <a class="d-flex center btn_cancelar" href="perfil.html">Cancelar</a>
                 </form>
             </div>
         </section>
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -62,13 +66,14 @@
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>

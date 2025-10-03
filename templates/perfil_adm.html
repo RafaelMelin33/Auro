@@ -6,18 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - login</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
-    <header class="d-flex between">
+    <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
             <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+                <a href="perfil_adm.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
                 <a href="index.html" id="logar">Sair</a>
             </div>
         </nav>
@@ -30,26 +33,36 @@
                 <div class="d-flex column adm_info">
                     <h2>Usuários</h2>
                     <div class="d-flex usuarios">
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do usuário</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do usuário</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do usuário</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do usuário</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do usuário</p>
-                        </div>
+                        <a href="perfil.html">
+                            <div class="fundo_cards_adm">
+                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
+                                <p>Nome do usuário</p>
+                            </div>
+                        </a>
+                        <a href="perfil.html">
+                            <div class="fundo_cards_adm">
+                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
+                                <p>Nome do usuário</p>
+                            </div>
+                        </a>
+                        <a href="perfil.html">
+                            <div class="fundo_cards_adm">
+                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
+                                <p>Nome do usuário</p>
+                            </div>
+                        </a>
+                        <a href="perfil.html">
+                            <div class="fundo_cards_adm">
+                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
+                                <p>Nome do usuário</p>
+                            </div>
+                        </a>
+                        <a href="perfil.html">
+                            <div class="fundo_cards_adm">
+                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
+                                <p>Nome do usuário</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <hr>
@@ -85,24 +98,15 @@
                     </div>
                     <div class="d-flex taxas">
                         <div class="fundo_cards_adm">
-                            <div class="d-flex between taxa">
-                                <p>2025</p>
-                                <a href="editar_taxa.html"><img src="../static/img/editar_icon.png" alt="icon editar"></a>
-                            </div>
+                            <p>2025</p>
                             <p>R$ 0,00</p>
                         </div>
                         <div class="fundo_cards_adm">
-                            <div class="d-flex between taxa">
-                                <p>2024</p>
-                                <a href="editar_taxa.html"><img src="../static/img/editar_icon.png" alt="icon editar"></a>
-                            </div>
+                            <p>2024</p>
                             <p>R$ 0,00</p>
                         </div>
                         <div class="fundo_cards_adm">
-                            <div class="d-flex between taxa">
-                                <p>2023</p>
-                                <a href="editar_taxa.html"><img src="../static/img/editar_icon.png" alt="icon editar"></a>
-                            </div>
+                            <p>2023</p>
                             <p>R$ 0,00</p>
                         </div>
                     </div>
@@ -112,7 +116,7 @@
     </main>
     <footer>
         <small>
-            <div class="d-flex between footer_infos">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -130,13 +134,14 @@
             </div>
             <hr>
             <nav>
-                <a href="#servicos">Nossos Serviços </a><span>|</span>
-                <a href="#como_funciona">Como funciona</a><span>|</span>
-                <a href="#sobre">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>

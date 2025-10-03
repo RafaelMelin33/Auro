@@ -6,20 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - editarusuario</title>
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/responsivo.css">
     <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
 </head>
 
 <body>
-    <header class="d-flex between">
+    <header class="d-flex between header_dash">
         <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <nav class="d-flex around">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
-                     <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+                alt="icone menu hamburguer"></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="index.html#servicos">Nossos serviços</a>
+            <a href="index.html#sobre">Quem somos</a>
+            <a href="index.html#como_funciona">Como funciona</a>
+            <div class="d-flex center">
+                <a href="perfil_adm.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+                <a href="index.html" id="logar">Sair</a>
             </div>
-            <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
         </nav>
     </header>
     <main>
@@ -31,14 +34,15 @@
                     <input placeholder="Digite o valor ex: R$100.00" type="number" name="valor" id="valor">
                     <label for="ano">Ano</label> 
                     <input placeholder="Digite o ano" type="number" name="ano" id="ano">
-                    <button>Adicionar Taxa</button>
+                    <a href="perfil_adm.html"><button type="button">Adicionar Taxa</button></a>
+                    <a class="d-flex center btn_cancelar" href="perfil_adm.html">Cancelar</a>
                 </form>
             </div>
         </section>
     </main>
     <footer>
         <small>
-            <div class="d-flex between">
+            <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
                     <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
@@ -46,23 +50,24 @@
                     <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
                     <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
                 </div>
-                <div class="d-flex column center">
+                <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
-                <div>
+                <div class="logo_footer">
                     <img src="../static/img/logo_clara.png" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="index.html">Nossos Serviços </a><span>|</span>
-                <a href="index.html">Como funciona </a><span>|</span>
-                <a href="index.html">Quem somos</a>
+                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
+                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
+                <a href="index.html#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    <script src="../static/js/script.js"></script>
 </body>
 
 </html>
