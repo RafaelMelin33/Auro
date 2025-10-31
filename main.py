@@ -532,7 +532,8 @@ def dashboard_simulacao():
                 WHERE DATA_FINAL IS NULL
                 ORDER BY DATA_INICIO DESC
             """)
-            taxa_row = cursor.fetchone()
+            taxa_tupla = cursor.fetchone()
+            taxa_porcentagem = float(taxa_tupla[0]) if taxa_tupla and taxa_tupla[0] is not None else 0.0
 
             mes = datetime.now().month
             cursor.execute("""
@@ -552,11 +553,6 @@ def dashboard_simulacao():
         finally:
             cursor.close()
 
-        if not taxa_row or taxa_row[0] is None:
-            taxa_porcentagem = 0.0
-        else:
-            taxa_porcentagem = float(taxa_row[0])
-
         taxa_dec = taxa_porcentagem / 100.0
 
         if parcelas <= 0:
@@ -564,13 +560,9 @@ def dashboard_simulacao():
             return render_template('dashboard_simulacao.html')
 
         if taxa_dec <= 0.0:
-            flash('Taxa inválida')            
+            flash('Taxa inválida')
         else:
-            denom = 1 - (1 + taxa_dec) ** (-parcelas)
-            if abs(denom) < 1e-12:
-                valor_mensal = valor_emp / parcelas
-            else:
-                valor_mensal = (valor_emp * taxa_dec) / denom
+            valor_mensal = (valor_emp * taxa_dec) / (1 - (1 + taxa_dec) ** (-parcelas))
 
         valor_total = valor_mensal * parcelas
 
