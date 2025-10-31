@@ -1,18 +1,23 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session
 from flask_bcrypt import generate_password_hash, check_password_hash
 from datetime import datetime, date
+from validate_docbr import CPF
 import fdb
-
 app = Flask(__name__)
 
+
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\AURO.FDB'
+database = r'C:\Users\Aluno\Desktop\AURO2.FDB'
 user = 'sysdba'
 password = 'sysdba'
 
 app.secret_key = 'Auro2025'
 
 con = fdb.connect(host=host, database=database, user=user, password=password)
+
+def validaCpf(usercpf):
+    cpf = CPF()
+    return cpf.validate(usercpf)
 
 @app.route('/')
 def index():#def é um função
@@ -48,6 +53,10 @@ def cadastro():
     if etapa == '1':
         nome = request.form['nome']#pega o nome do formulario
         cpf = request.form['cpf']#pega o cpf do formulario
+
+        if validaCpf(cpf) == False:
+            flash('CPF inválido!', 'erro')
+            return redirect(url_for('abrir_cadastro'))
         data_nasc_str = request.form['dataNascimento']
         nascimento = datetime.strptime(data_nasc_str, '%Y-%m-%d').date()
         hoje = date.today()
@@ -84,6 +93,9 @@ def cadastro():
     elif etapa == '3':
         confirmaEmail = request.form['confirmaEmail']
         confirmaCpf = request.form['confirmaCpf']
+        if validaCpf(confirmaCpf) == False:
+            flash('CPF inválido!', 'erro')
+            return redirect(url_for('abrir_cadastro'))
         confirmaNome = request.form['confirmaNome']
         confirmaDataNascimento = request.form['confirmaDataNascimento']
         nascimento = datetime.strptime(confirmaDataNascimento, '%Y-%m-%d').date()
@@ -134,7 +146,6 @@ def cadastro():
             return redirect(url_for('abrir_login'))
         finally:
             cursor.close()
-
 @app.route('/login', methods=['POST'])
 def login():
     cpf = request.form['cpf']
@@ -143,41 +154,40 @@ def login():
     cursor = con.cursor()
     try:
         cursor.execute("SELECT NOME FROM USUARIO WHERE CPF = ?", (cpf,))
-        temcpf = cursor.fetchone()
-        if not temcpf:
+        resultado = cursor.fetchone()
+        if not resultado:
             flash('CPF não encontrado.', 'erro')
             return redirect(url_for('abrir_login'))
-        nome = temcpf[0]
-        # cursor.execute("SELECT SITUACAO FROM USUARIO WHERE CPF = ?", (cpf,))
-        # situacao = cursor.fetchone()[0]
-        # cursor.execute("SELECT SENHA FROM USUARIO WHERE CPF = ?", (cpf,))
-        # senha_hash = cursor.fetchone()[0]
-        # cursor.execute("SELECT TIPO FROM USUARIO WHERE CPF = ?", (cpf,))
-        # tipo = cursor.fetchone()[0]
-        # cursor.execute("SELECT TENTATIVA FROM USUARIO WHERE CPF = ?", (cpf,))
-        # tentativas = cursor.fetchone()[0]
+        nome = resultado[0]
 
-        usuario = cursor.execute("SELECT SITUACAO, SENHA, TIPO, TENTATIVA FROM USUARIO WHERE CPF = ?", (cpf,))
-
-        situacao, senha_hash, tipo, tentativas = usuario.fetchone()
+        cursor.execute("SELECT SITUACAO, SENHA, TIPO, TENTATIVA, ID_USUARIO FROM USUARIO WHERE CPF = ?", (cpf,))
+        usuario = cursor.fetchone()
+        if not usuario:
+            flash('Usuário não encontrado.', 'erro')
+            return redirect(url_for('abrir_login'))
+        situacao, senha_hash, tipo, tentativas, id_usuario = usuario
 
         if situacao == 1:
             flash('Conta inativa. Entre em contato com o suporte.', 'erro')
             return redirect(url_for('abrir_login'))
+
         if tipo == 1:
             if senha == senha_hash:
                 valido = True
         else:
             if check_password_hash(senha_hash, senha):
                 valido = True
+
         if valido:
             cursor.execute("UPDATE USUARIO SET TENTATIVA = 0 WHERE CPF = ?", (cpf,))
             con.commit()
+            # Armazenar dados na sessão, incluindo id_usuario
             session['usuario_logado'] = True
             session['nome_usuario'] = nome
             session['cpf_usuario'] = cpf
             session['tipo_usuario'] = tipo
             session['senha_usuario'] = senha
+            session['id_usuario'] = id_usuario
             flash('Login realizado com sucesso!', 'sucesso')
             if tipo == 1:
                 return redirect(url_for('perfil_admin'))
@@ -197,7 +207,7 @@ def login():
                 flash('Conta bloqueada após 3 tentativas. Entre em contato com o suporte.', 'erro')
             else:
                 cursor.execute("UPDATE USUARIO SET TENTATIVA = ? WHERE CPF = ?", (novas, cpf))
-                flash(f'Senha incorreta.', 'erro')
+                flash('Senha incorreta.', 'erro')
             con.commit()
             return redirect(url_for('abrir_login'))
     finally:
@@ -209,6 +219,7 @@ def logout():
     flash('Logout realizado com sucesso!', 'sucesso')
     return redirect(url_for('index'))
 
+
 @app.route('/perfil_admin')
 def perfil_admin():
     if not session.get('usuario_logado') or session.get('tipo_usuario') != 1:
@@ -217,12 +228,21 @@ def perfil_admin():
     cursor = con.cursor()
     try:
         cursor.execute("SELECT NOME, CPF FROM USUARIO WHERE TIPO=0")
-        usuarios = cursor.fetchall()  # [(nome, cpf), ...]
+        usuarios = cursor.fetchall()
         cursor.execute("SELECT NOME, CPF FROM USUARIO WHERE TIPO=1")
         adms = cursor.fetchall()
+
+        # Buscar taxas ordenadas por data
+        cursor.execute("""
+                       SELECT ID_TAXA, DESCRICAO, VALOR, DATA_INICIO, DATA_FINAL
+                       FROM TAXA
+                       ORDER BY DATA_INICIO, ID_TAXA DESC
+                       """)
+        taxas = cursor.fetchall()
     finally:
         cursor.close()
-    return render_template('perfil_adm.html', usuarios=usuarios, adms=adms)
+    return render_template('perfil_adm.html', usuarios=usuarios, adms=adms, taxas=taxas)
+
 
 @app.route('/perfil_cliente')
 def perfil_cliente():
@@ -236,12 +256,40 @@ def perfil_cliente():
 
     cpf = session['cpf_usuario']
     nome = session['nome_usuario']
+    id_usuario = session.get('id_usuario')
+
     cursor = con.cursor()
     try:
         cursor.execute("SELECT DATA_NASCIMENTO FROM USUARIO WHERE CPF = ?", (cpf,))
         user = cursor.fetchone()
         data_nascimento = user[0]
-        return render_template('perfil.html',nome_usuario=nome,data_nascimento=data_nascimento,cpf=cpf)
+
+        # Buscar total de receitas
+        cursor.execute("""
+                       SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                       FROM MOVIMENTACAO
+                       WHERE ID_USUARIO = ?
+                         AND CONDICAO = 1
+                       """, (id_usuario,))
+        total_receitas = cursor.fetchone()[0] or 0
+
+        # Buscar total de despesas
+        cursor.execute("""
+                       SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                       FROM MOVIMENTACAO
+                       WHERE ID_USUARIO = ?
+                         AND CONDICAO = 0
+                       """, (id_usuario,))
+        total_despesas = cursor.fetchone()[0] or 0
+
+        # Calcular saldo
+        saldo = total_receitas - total_despesas
+
+        return render_template('perfil.html',
+                               nome_usuario=nome,
+                               data_nascimento=data_nascimento,
+                               cpf=cpf,
+                               saldo=saldo)
     finally:
         cursor.close()
 
@@ -263,6 +311,9 @@ def editar_usuario(cpf):
         if request.method == 'POST':
             nome_novo = request.form['nome']
             cpf_novo = request.form['cpf']
+            if validaCpf(cpf_novo) == False:
+                flash('CPF inválido!', 'erro')
+                return redirect(url_for('editar_usuario', cpf=cpf))
             senha_form = request.form.get('senha', '')
             email_novo = request.form['email']
             data_novo = request.form['data_nascimento']
@@ -346,7 +397,6 @@ def editar_usuario(cpf):
             nome = usuario[0]
             cpf_form = usuario[1]
             senha_texto = session.get('senha_usuario', '') if tipo_usuario == 0 else ''
-            # senha_texto = usuario[2]
             email = usuario[3]
             data_nascimento = usuario[4]
             situacao = usuario[5]
@@ -419,33 +469,540 @@ def cadastrar_adm():
     finally:
         cursor.close()
 
+
 @app.route('/dashboard')
 def dashboard():
     if not session.get('usuario_logado'):
-        flash('Acesso restrito.', 'erro')
-        return redirect(url_for('index'))
-    return render_template('dashboard.html')
+        flash('Faça login para acessar o dashboard.', 'erro')
+        return redirect(url_for('abrir_login'))
 
-@app.route('/dashboard/simulacao')
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+    try:
+
+        cursor.execute("""
+                       SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                       FROM MOVIMENTACAO
+                       WHERE ID_USUARIO = ?
+                         AND CONDICAO = 1
+                       """, (id_usuario,))
+        total_receitas = cursor.fetchone()[0] or 0
+
+        cursor.execute("""
+                       SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                       FROM MOVIMENTACAO
+                       WHERE ID_USUARIO = ?
+                         AND CONDICAO = 0
+                       """, (id_usuario,))
+        total_despesas = cursor.fetchone()[0] or 0
+
+        saldo = total_receitas - total_despesas
+
+    finally:
+        cursor.close()
+
+    return render_template('dashboard.html',
+                           total_receitas=total_receitas,
+                           total_despesas=total_despesas,
+                           saldo=saldo)
+@app.route('/dashboard_simulacao', methods=['GET', 'POST'])
 def dashboard_simulacao():
     if not session.get('usuario_logado'):
-        flash('Acesso restrito.', 'erro')
-        return redirect(url_for('index'))
+        flash('Faça login para acessar a simulação.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    etapa = None
+
+    if request.method == 'POST':
+        try:
+            valor_emp = float(request.form.get('valor', 0))
+            parcelas = int(request.form.get('parcelas', 0))
+        except ValueError:
+            flash('Valor ou parcelas inválidos.', 'erro')
+            return render_template('dashboard_simulacao.html')
+
+        data = request.form.get('data')
+
+        cursor = con.cursor()
+        try:
+            cursor.execute("""
+                SELECT FIRST 1 VALOR
+                FROM TAXA
+                WHERE DATA_FINAL IS NULL
+                ORDER BY DATA_INICIO DESC
+            """)
+            taxa_row = cursor.fetchone()
+
+            mes = datetime.now().month
+            cursor.execute("""
+                SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                FROM MOVIMENTACAO
+                WHERE ID_USUARIO = ? AND CONDICAO = 1 AND EXTRACT(MONTH FROM DATA_ATUAL) = ?
+            """, (id_usuario, mes))
+            total_receitas = cursor.fetchone()[0] or 0
+
+            cursor.execute("""
+                SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+                FROM MOVIMENTACAO
+                WHERE ID_USUARIO = ? AND CONDICAO = 0 AND EXTRACT(MONTH FROM DATA_ATUAL) = ?
+            """, (id_usuario, mes))
+            total_despesas = cursor.fetchone()[0] or 0
+
+        finally:
+            cursor.close()
+
+        if not taxa_row or taxa_row[0] is None:
+            taxa_porcentagem = 0.0
+        else:
+            taxa_porcentagem = float(taxa_row[0])
+
+        taxa_dec = taxa_porcentagem / 100.0
+
+        if parcelas <= 0:
+            flash('Número de parcelas inválido.', 'erro')
+            return render_template('dashboard_simulacao.html')
+
+        if taxa_dec <= 0.0:
+            flash('Taxa inválida')            
+        else:
+            denom = 1 - (1 + taxa_dec) ** (-parcelas)
+            if abs(denom) < 1e-12:
+                valor_mensal = valor_emp / parcelas
+            else:
+                valor_mensal = (valor_emp * taxa_dec) / denom
+
+        valor_total = valor_mensal * parcelas
+
+        saldo = float(total_receitas) - float(total_despesas)
+        if saldo > 0:
+            comprometimento = (valor_mensal / saldo) * 100
+        else:
+            comprometimento = None
+
+        etapa = 2
+
+
+        if comprometimento is None:
+            risco = ''
+        else:
+            try:
+                c = float(comprometimento)
+                if c >= 30:
+                    risco = 'Alto'
+                elif c >= 20:
+                    risco = 'Médio'
+                else:
+                    risco = 'Baixo'
+            except Exception:
+                risco = ''
+
+        return render_template('dashboard_simulacao.html',
+                               etapa=etapa,
+                               valor_mensal=valor_mensal,
+                               valor_total=valor_total,
+                               total_receitas=total_receitas,
+                               total_despesas=total_despesas,
+                               saldo=saldo,
+                               comprometimento=comprometimento,
+                               taxa=taxa_porcentagem,
+                               parcelas=parcelas,
+                               valor_emprestimo=valor_emp,
+                               risco=risco)
+                               
+
+    # GET
     return render_template('dashboard_simulacao.html')
 
-@app.route('/dashboard/historico')
+@app.route('/dashboard_historico')
 def dashboard_historico():
     if not session.get('usuario_logado'):
-        flash('Acesso restrito.', 'erro')
-        return redirect(url_for('index'))
+        flash('Faça login para acessar o histórico.', 'erro')
+        return redirect(url_for('abrir_login'))
     return render_template('dashboard_historico.html')
 
 @app.route('/dashboard/movimentacoes')
-def dashboard_movimentacoes():
+def dashboard_extrato():
     if not session.get('usuario_logado'):
-        flash('Acesso restrito.', 'erro')
+        flash('Faça login para acessar as movimentações.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+    try:
+        cursor.execute("""
+            SELECT DESCRICAO, VALOR, DATA_ATUAL, ID_MOVIMENTACAO
+            FROM MOVIMENTACAO
+            WHERE ID_USUARIO = ? AND CONDICAO = 1
+            ORDER BY DATA_ATUAL DESC
+        """, (id_usuario,))
+        receitas = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT DESCRICAO, VALOR, DATA_ATUAL, ID_MOVIMENTACAO
+            FROM MOVIMENTACAO
+
+            WHERE ID_USUARIO = ? AND CONDICAO = 0
+            ORDER BY DATA_ATUAL DESC
+        """, (id_usuario,))
+        despesas = cursor.fetchall()
+
+        cursor.execute("""
+            SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+            FROM MOVIMENTACAO
+            WHERE ID_USUARIO = ? AND CONDICAO = 1
+        """, (id_usuario,))
+        total_receitas = cursor.fetchone()[0] or 0
+
+        cursor.execute("""
+            SELECT CAST(SUM(VALOR) AS DOUBLE PRECISION)
+            FROM MOVIMENTACAO
+            WHERE ID_USUARIO = ? AND CONDICAO = 0
+        """, (id_usuario,))
+        total_despesas = cursor.fetchone()[0] or 0
+
+
+    finally:
+        cursor.close()
+
+    return render_template('dashboard_extrato.html',
+                           receitas=receitas,
+                           despesas=despesas,
+                           total_receitas=total_receitas,
+                           total_despesas=total_despesas)
+
+@app.route('/movimentacoes/cadastrar_despesa', methods=['GET', 'POST'])
+def cadastrar_despesa():
+    if not session.get('usuario_logado'):
+        flash('Faça login para cadastrar despesa.', 'erro')
+        return redirect(url_for('abrir_login'))
+    if request.method == 'POST':
+        descricao = request.form['descricao']
+        valor = request.form['valor']
+        tipo = int(request.form['tipo'])
+        cursor = con.cursor()
+        try:
+            cursor.execute("""
+                INSERT INTO MOVIMENTACAO (DESCRICAO, VALOR, CONDICAO, TIPO, ID_USUARIO)
+                VALUES (?, ?, 0, ?, ?)""",
+                (descricao, valor, tipo, session.get('id_usuario')))
+            con.commit()
+            flash('Despesa cadastrada com sucesso!', 'sucesso')
+            return redirect(url_for('dashboard_extrato'))
+        finally:
+            cursor.close()
+    return render_template('cadastrar_despesa.html')
+
+@app.route('/movimentacoes/cadastrar_receita', methods=['GET', 'POST'])
+def cadastrar_receita():
+    if not session.get('usuario_logado'):
+        flash('Faça login para cadastrar receita.', 'erro')
+        return redirect(url_for('abrir_login'))
+    if request.method == 'POST':
+        descricao = request.form['descricao']
+        valor = request.form['valor']
+        tipo = int(request.form['tipo'])  # 0 = fixo, 1 = variável
+        cursor = con.cursor()
+        try:
+            cursor.execute("""
+                INSERT INTO MOVIMENTACAO (DESCRICAO, VALOR, CONDICAO, TIPO, ID_USUARIO)
+                VALUES (?, ?, 1, ?, ?)""",
+                (descricao, valor, tipo, session.get('id_usuario')))
+            con.commit()
+            flash('Receita cadastrada com sucesso!', 'sucesso')
+            return redirect(url_for('dashboard_extrato'))
+        finally:
+            cursor.close()
+    return render_template('cadastrar_receita.html')
+
+
+@app.route('/admin/adicionar_taxa')
+def visualizar_adicionar_taxa():
+    if not session.get('usuario_logado') or session.get('tipo_usuario') != 1:
+        flash('Acesso negado.', 'erro')
         return redirect(url_for('index'))
-    return render_template('dashboard_extrato.html')
+    return render_template('adicionar_taxa.html')
+
+@app.route('/admin/cadastrar_taxa', methods=['POST'])
+def cadastrar_taxa():
+    if not session.get('usuario_logado') or session.get('tipo_usuario') != 1:
+        flash('Acesso negado: somente administradores podem cadastrar taxas.', 'erro')
+        return redirect(url_for('index'))
+ 
+    descricao = request.form.get('descricao')
+    valor = request.form.get('valor')
+ 
+    cursor = con.cursor()
+    try:
+        # Checa se já existe uma taxa cadastrada hoje
+        cursor.execute("""
+            SELECT 1 FROM TAXA WHERE DATA_INICIO = CURRENT_DATE
+        """)
+        existe_taxa_hoje = cursor.fetchone()
+ 
+        if existe_taxa_hoje:
+            flash('Já existe uma taxa cadastrada hoje. Só é permitido cadastrar uma taxa por dia.', 'erro')
+            return redirect(url_for('visualizar_adicionar_taxa'))
+ 
+        # Atualiza a anterior e cadastra uma nova
+        cursor.execute("""
+            UPDATE TAXA
+            SET DATA_FINAL = CURRENT_DATE
+            WHERE DATA_FINAL IS NULL
+        """)
+        cursor.execute("""
+            INSERT INTO TAXA (DESCRICAO, VALOR, DATA_INICIO, DATA_FINAL)
+            VALUES (?, ?, CURRENT_DATE, NULL)
+        """, (descricao, valor))
+ 
+        con.commit()
+        flash('Taxa cadastrada com sucesso!', 'sucesso')
+        return redirect(url_for('perfil_admin'))
+    except:
+        flash(f'Erro ao cadastrar taxa', 'erro')
+        return redirect(url_for('visualizar_adicionar_taxa'))
+    finally:
+        cursor.close()
+
+@app.route('/movimentacoes/editar_receita/<int:id_movimentacao>', methods=['GET', 'POST'])
+def editar_receita(id_movimentacao):
+    if not session.get('usuario_logado'):
+        flash('Faça login para editar receita.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+
+    try:
+        cursor.execute("""
+                       SELECT ID_MOVIMENTACAO, DESCRICAO, VALOR, TIPO, CONDICAO
+                       FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                         AND CONDICAO = 1
+                       """, (id_movimentacao, id_usuario))
+
+        movimentacao = cursor.fetchone()
+
+        if not movimentacao:
+            flash('Receita não encontrada ou você não tem permissão para editá-la.', 'erro')
+            return redirect(url_for('dashboard_extrato'))
+
+        if request.method == 'POST':
+            descricao = request.form['descricao']
+            valor = request.form['valor']
+            tipo = int(request.form['tipo'])
+
+            cursor.execute("""
+                           UPDATE MOVIMENTACAO
+                           SET DESCRICAO = ?,
+                               VALOR     = ?,
+                               TIPO      = ?
+                           WHERE ID_MOVIMENTACAO = ?
+                             AND ID_USUARIO = ?
+                           """, (descricao, valor, tipo, id_movimentacao, id_usuario))
+
+            con.commit()
+            flash('Receita atualizada com sucesso!', 'sucesso')
+            return redirect(url_for('dashboard_extrato'))
+
+        return render_template('editar_receita.html',
+                               id_movimentacao=movimentacao[0],
+                               descricao=movimentacao[1],
+                               valor=movimentacao[2],
+                               tipo=movimentacao[3])
+    finally:
+        cursor.close()
+
+
+@app.route('/movimentacoes/editar_despesa/<int:id_movimentacao>', methods=['GET', 'POST'])
+def editar_despesa(id_movimentacao):
+    if not session.get('usuario_logado'):
+        flash('Faça login para editar despesa.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+
+    try:
+        cursor.execute("""
+                       SELECT ID_MOVIMENTACAO, DESCRICAO, VALOR, TIPO, CONDICAO
+                       FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                         AND CONDICAO = 0
+                       """, (id_movimentacao, id_usuario))
+
+        movimentacao = cursor.fetchone()
+
+        if not movimentacao:
+            flash('Despesa não encontrada ou você não tem permissão para editá-la.', 'erro')
+            return redirect(url_for('dashboard_extrato'))
+
+        if request.method == 'POST':
+            descricao = request.form['descricao']
+            valor = request.form['valor']
+            tipo = int(request.form['tipo'])
+
+            cursor.execute("""
+                           UPDATE MOVIMENTACAO
+                           SET DESCRICAO = ?,
+                               VALOR     = ?,
+                               TIPO      = ?
+                           WHERE ID_MOVIMENTACAO = ?
+                             AND ID_USUARIO = ?
+                           """, (descricao, valor, tipo, id_movimentacao, id_usuario))
+
+            con.commit()
+            flash('Despesa atualizada com sucesso!', 'sucesso')
+            return redirect(url_for('dashboard_extrato'))
+
+        return render_template('editar_despesa.html',
+                               id_movimentacao=movimentacao[0],
+                               descricao=movimentacao[1],
+                               valor=movimentacao[2],
+                               tipo=movimentacao[3])
+    finally:
+        cursor.close()
+@app.route('/movimentacoes/deletar_receita/<int:id_movimentacao>', methods=['GET', 'POST'])
+def deletar_receita(id_movimentacao):
+    if not session.get('usuario_logado'):
+        flash('Faça login para deletar receita.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+
+    try:
+        cursor.execute("""
+                       SELECT ID_MOVIMENTACAO
+                       FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                         AND CONDICAO = 1
+                       """, (id_movimentacao, id_usuario))
+
+        movimentacao = cursor.fetchone()
+
+        if not movimentacao:
+            flash('Receita não encontrada ou você não tem permissão para deletá-la.', 'erro')
+            return redirect(url_for('dashboard_extrato'))
+
+        cursor.execute("""
+                       DELETE FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                       """, (id_movimentacao, id_usuario))
+        con.commit()
+        flash('Receita deletada com sucesso!', 'sucesso')
+    finally:
+        cursor.close()
+
+    return redirect(url_for('dashboard_extrato'))
+
+
+@app.route('/movimentacoes/deletar_despesa/<int:id_movimentacao>', methods=['GET', 'POST'])
+def deletar_despesa(id_movimentacao):
+    if not session.get('usuario_logado'):
+        flash('Faça login para deletar despesa.', 'erro')
+        return redirect(url_for('abrir_login'))
+
+    id_usuario = session.get('id_usuario')
+    cursor = con.cursor()
+
+    try:
+        # Verificar se a despesa pertence ao usuário e se é despesa (CONDICAO = 0)
+        cursor.execute("""
+                       SELECT ID_MOVIMENTACAO
+                       FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                         AND CONDICAO = 0
+                       """, (id_movimentacao, id_usuario))
+
+        movimentacao = cursor.fetchone()
+
+        if not movimentacao:
+            flash('Despesa não encontrada ou você não tem permissão para deletá-la.', 'erro')
+            return redirect(url_for('dashboard_extrato'))
+
+        cursor.execute("""
+                       DELETE FROM MOVIMENTACAO
+                       WHERE ID_MOVIMENTACAO = ?
+                         AND ID_USUARIO = ?
+                       """, (id_movimentacao, id_usuario))
+        con.commit()
+        flash('Despesa deletada com sucesso!', 'sucesso')
+    finally:
+        cursor.close()
+    return redirect(url_for('dashboard_extrato'))
+
+
+@app.route('/admin/editar_taxa/<int:id_taxa>', methods=['GET', 'POST'])
+def editar_taxa(id_taxa):
+    if not session.get('usuario_logado') or session.get('tipo_usuario') != 1:
+        flash('Acesso negado: somente administradores podem editar taxas.', 'erro')
+        return redirect(url_for('index'))
+
+    cursor = con.cursor()
+
+    try:
+        cursor.execute("SELECT ID_TAXA, DESCRICAO, VALOR FROM TAXA WHERE ID_TAXA = ?", (id_taxa,))
+        taxa = cursor.fetchone()
+
+        if not taxa:
+            flash('Taxa não encontrada.', 'erro')
+            return redirect(url_for('perfil_admin'))
+
+        if request.method == 'POST':
+            descricao = request.form.get('descricao')
+            valor = request.form.get('valor')
+
+            # CORRIGIDO: ID -> ID_TAXA
+            cursor.execute("""
+                           UPDATE TAXA
+                           SET DESCRICAO = ?,
+                               VALOR     = ?
+                           WHERE ID_TAXA = ?
+                           """, (descricao, valor, id_taxa))
+            con.commit()
+            flash('Taxa editada com sucesso!', 'sucesso')
+            return redirect(url_for('perfil_admin'))
+
+        return render_template('editar_taxa.html', taxa=taxa)
+
+    except:
+        flash(f'Erro ao editar taxa ', 'erro')
+        return redirect(url_for('perfil_admin'))
+    finally:
+        cursor.close()
+
+@app.route('/admin/deletar_taxa/<int:id_taxa>', methods=['GET', 'POST'])
+def deletar_taxa(id_taxa):
+    if not session.get('usuario_logado') or session.get('tipo_usuario') != 1:
+        flash('Acesso negado: somente administradores podem deletar taxas.', 'erro')
+        return redirect(url_for('index'))
+
+    
+
+    cursor = con.cursor()
+    try:
+        cursor.execute("SELECT ID_TAXA, DESCRICAO, VALOR FROM TAXA WHERE ID_TAXA = ?", (id_taxa,))
+        taxa = cursor.fetchone()
+
+        if not taxa:
+            flash('Taxa não encontrada.', 'erro')
+            return redirect(url_for('perfil_admin'))
+
+        cursor.execute("DELETE FROM TAXA WHERE ID_TAXA = ?", (id_taxa,))
+        con.commit()
+        flash('Taxa excluída com sucesso!', 'sucesso')
+        return redirect(url_for('perfil_admin'))
+    except:
+        flash(f'Erro ao excluir taxa ', 'erro')
+        return redirect(url_for('perfil_admin'))
+    finally:
+        cursor.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
