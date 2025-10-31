@@ -12,20 +12,29 @@
 
 <body>
     <header class="d-flex between header_dash">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
+        <a href="{{ url_for('index') }}"><img src="../static/img/logo_escura.png" alt="logo"></a>
         <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
                 alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html#servicos">Nossos serviços</a>
-            <a href="index.html#sobre">Quem somos</a>
-            <a href="index.html#como_funciona">Como funciona</a>
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
             <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
+                <a href="{{ url_for('abrir_login') }}" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
             <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
@@ -33,10 +42,10 @@
         </div>
         <section class="d-flex fundo_dash formata_altura">
             <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
-                <a href="dashboard.html" class="btn">Geral</a>
-                <a href="dashboard_simulacao.html" class="btn selecionado">Simulação</a>
-                <a href="dashboard_historico.html" class="btn">Histórico</a>
-                <a href="dashboard_movimentacoes.html" class="btn">Movimentações</a>
+                <a href="{{ url_for('dashboard') }}" class="btn">Geral</a>
+                <a href="{{ url_for('dashboard_simulacao') }}" class="btn selecionado">Simulação</a>
+                <a href="{{ url_for('dashboard_historico') }}" class="btn">Histórico</a>
+                <a href="{{ url_for('dashboard_extrato') }}" class="btn">Extrato</a>
             </nav>
             <div class="infos_dash d-flex column">
                 <div class="container_cards d-flex between">
@@ -44,14 +53,14 @@
 
                     <div class="fundo_form emprestimo">
                         <h2 class="d-flex center">Simular empréstimo</h2>
-                        <form action="">
+                        <form action="{{ url_for('dashboard_simulacao') }}" method="POST">
                             <label for="valor">Valor</label>
-                            <input type="number" name="valor" id="valor" placeholder="Valor total do emprestimo">
+                            <input type="number" name="valor" id="valor" step="0.01" placeholder="Valor total do emprestimo" required>
                             <label for="parcelas">Parcelas</label>
-                            <input type="number" name="parcelas" id="parcelas" placeholder="Quantidade de parcelas">
+                            <input type="number" name="parcelas" id="parcelas" placeholder="Quantidade de parcelas" required>
                             <label for="data">Data</label>
-                            <input type="date" name="data" id="data">
-                            <button id="btn_simular">Simular empréstimo</button>
+                            <input type="date" name="data" id="data" required>
+                            <button id="btn_simular" type="submit">Simular empréstimo</button>
                         </form>
                     </div>
                     
@@ -59,16 +68,24 @@
                     <div class="fundo_form emprestimo">
                         <h2 class="d-flex center">Análise</h2>
 
-                        <form action="">
+                        <form action="{{ url_for('dashboard_simulacao') }}" method="POST">
                             <label for="valor_mensal">Valor Mensal</label>
-                            <input type="text" name="valor_mensal" id="valor_mensal" disabled>
+                            <input type="text" name="valor_mensal_display" id="valor_mensal" value="{{ "%.2f"|format(valor_mensal) if valor_mensal is defined else '' }}" readonly>
+                            <input type="hidden" name="valor_mensal" value="{{ valor_mensal if valor_mensal is defined else '' }}">
+
                             <label for="valor_total">Valor Total</label>
-                            <input type="text" name="valor_total" id="valor_total" disabled>
-                            <label for="comprometimento">Comprometimento</label>
-                            <input type="text" name="comprometimento" id="comprometimento" disabled>
-                            <label for="riscos">Riscos</label>
-                            <input type="text" name="riscos" id="riscos" disabled>
-                            <button>Confirmar</button>
+                            <input type="text" name="valor_total_display" id="valor_total" value="{{ "%.2f"|format(valor_total) if valor_total is defined else '' }}" readonly>
+                            <input type="hidden" name="valor_total" value="{{ valor_total if valor_total is defined else '' }}">
+
+                            <label for="comprometimento">Comprometimento (%)</label>
+                            <input type="text" name="comprometimento_display" id="comprometimento" value="{% if comprometimento is defined and comprometimento is not none %}{{ "%.2f"|format(comprometimento) }}{% else %}N/A{% endif %}" readonly>
+                            <input type="hidden" name="comprometimento" value="{{ comprometimento if comprometimento is defined and comprometimento is not none else '' }}">
+
+                            <label for="risco">Risco</label>
+                            <input type="text" name="risco_display" id="risco" value="{{ risco if risco is defined else '' }}" readonly>
+                            <input type="hidden" name="risco" value="{{ risco if risco is defined else '' }}">
+
+                            <button type="submit">Confirmar</button>
                         </form>
                     </div>
                 </div>
@@ -94,9 +111,9 @@
             </div>
             <hr>
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços </a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
