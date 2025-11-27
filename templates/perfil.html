@@ -4,84 +4,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <title>Auro - Perfil</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}"
+                alt="logo"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img
+                src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
                 alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
-            <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf_usuario']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
+
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <section class="fundo formata_altura d-flex center">
             <div class="fundo_perfil">
-                <h2>Bem-vindo 'usuário'</h2>
+                <h2>Bem-vindo {{ nome_usuario }}</h2>
                 <hr>
                 <div class="infos_perfil d-flex around">
                     <div class="d-flex between">
                         <div class="d-flex between">
-                            <p>Nome do usuário</p>
-                            <p>Data de nascimento</p>
+                            <p>{{ nome_usuario }}</p>
+                            <p>{{ data_nascimento.strftime('%d/%m/%Y') }}</p>
                         </div>
-                        <a href="editar_usuario.html"><img src="../static/img/editar_icon.png" alt="icone editar"></a>
+
+
                     </div>
-                    <a href="dashboard.html" class="btn">Ir para dashboard</a>
+                    <a href="{{ url_for('editar_usuario', cpf=cpf) }}" class="btn">
+                        <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                    </a>
+                    {% if session.get('tipo_usuario') == 0 %}
+                    <a href="{{url_for('dashboard')}}" class="btn">Ir para dashboard</a>
+                    {% else %}
+                    <a href="{{url_for('admin_dashboard', cpf=cpf)}}" class="btn">Ir para dashboard</a>
+                    {% endif %}
+                    {% if session.get('tipo_usuario') == 0 %}
+                    <a href="{{ url_for('gerar_relatorio_usuario', cpf=cpf) }}" class="btn">Gerar Relatório PDF</a>
+                    {% else %}
+                    <a href="{{ url_for('gerar_relatorio_usuario', cpf=cpf) }}" class="btn">Gerar Relatório PDF</a>
+                    {% endif %}
                 </div>
 
-                <div class="container_cards d-flex between">
+                {% if session.get('tipo_usuario') == 0 %}
+                <div class="container_cards d-flex center">
                     <div class="card_valores">
-                        <h3>Receitas</h3>
-                        <p class="positivo">R$0,00</p>
-                    </div>
-                    <div class="card_valores">
-                        <h3>Despesas</h3>
-                        <p class="negativo">R$0,00</p>
+                        <h3>Saldo</h3>
+                        <p class="{% if saldo >= 0 %}positivo{% else %}negativo{% endif %}">R$ {{
+                            "{:,.2f}".format(saldo) }}</p>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </section>
     </main>
+
     <footer>
         <small>
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook"
+                        class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>

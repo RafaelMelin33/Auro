@@ -2,60 +2,123 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auro - dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
+    <!-- Adicionar Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <header class="d-flex between header_dash">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
-                alt="icone menu hamburguer"></button>
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}"
+                alt="logo" /></a>
+        <button onclick="menu()" id="menu_hamburguer"><img
+                src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
+                alt="icone menu hamburguer" /></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html#servicos">Nossos serviços</a>
-            <a href="index.html#sobre">Quem somos</a>
-            <a href="index.html#como_funciona">Como funciona</a>
-            <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf_usuario']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
-            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
-                    alt="icone menu hamburguer"></button>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img
+                    src="{{ url_for('static', filename='img/seta_icon.png') }}" alt="icone menu hamburguer" /></button>
         </div>
         <section class="d-flex fundo_dash formata_altura">
             <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
-                <a href="dashboard.html" class="btn selecionado">Geral</a>
-                <a href="dashboard_simulacao.html" class="btn">Simulação</a>
-                <a href="dashboard_historico.html" class="btn">Histórico</a>
-                <a href="dashboard_movimentacoes.html" class="btn">Movimentações</a>
+                {% if session.get('tipo_usuario') == 0 %}
+                <a href="{{ url_for('dashboard') }}" class="btn selecionado">Geral</a>
+                <a href="{{ url_for('dashboard_simulacao') }}" class="btn">Simulação</a>
+                <a href="{{ url_for('dashboard_historico') }}" class="btn">Histórico</a>
+                <a href="{{ url_for('dashboard_extrato') }}" class="btn">Extrato</a>
+                {% else %}
+                <a href="{{ url_for('admin_dashboard', cpf=session['visualizar_usuario_cpf']) }}" class="btn selecionado">Geral</a>
+                <a href="{{ url_for('admin_dashboard_simulacao', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Simulação</a>
+                <a href="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Histórico</a>
+                <a href="{{ url_for('admin_dashboard_extrato', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Extrato</a>
+                {% endif %}
             </nav>
             <div class="infos_dash d-flex column">
                 <div class="container_cards d-flex between">
                     <div class="card_valores">
                         <h3>Receitas</h3>
-                        <p class="positivo">R$0,00</p>
+                        <p class="positivo" id="total_receita">R$ {{ "{:,.2f}".format(total_receitas) }}</p>
                     </div>
                     <div class="card_valores">
                         <h3>Despesas</h3>
-                        <p class="negativo">R$0,00</p>
+                        <p class="negativo" id="total_despesa">R$ {{ "{:,.2f}".format(total_despesas) }}</p>
                     </div>
                     <div class="card_valores">
                         <h3>Saldo</h3>
-                        <p class="saldo">R$0,00</p>
+                        <p id="valorSaldo" class="{% if saldo >= 0 %}positivo{% else %}negativo{% endif %}">
+                            R$ {{ "{:,.2f}".format(saldo) }}
+                        </p>
                     </div>
                 </div>
-                <div class="d-flex center grafico">
-                    <img src="../static/img/grafico.png" alt="" class="">
-                    <!-- Aqui vai um gráfico -->
+
+
+                <div class="container grafico">
+                    <!-- Seletor de Ano -->
+                    <div class="ano-selector">
+                        <label for="selectAno"><strong>Selecionar Ano:</strong></label>
+                        {% if session.get('tipo_usuario') == 0 %}
+                        <select id="selectAno" onchange="trocarAno()">
+                        {% else %}
+                        <select id="selectAno" onchange="trocarAnoAdm()">
+                        {% endif %}
+                            {% for ano in range(2000, 2031) %}
+                                <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>
+                                    {{ ano }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Gráfico -->
+                    <div class="grafico-container">
+                        
+                        <h3>Gráfico Financeiro (Ano: {{ ano_selecionado }})</h3>
+                        
+                        {% if tem_movimentacoes_ano %}
+                            <figure>
+                                {{ grafico_svg|safe }}
+                            </figure>
+                        
+                        {% else %}
+                            <p class="sem-dados">
+                                Não há movimentações (receitas ou despesas) registradas para o ano de {{ ano_selecionado }}.
+                            </p>
+                        {% endif %}
+
+                    </div>
                 </div>
             </div>
         </section>
@@ -65,29 +128,51 @@
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp"
+                        class="redes" />
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin"
+                        class="redes" />
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes" />
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook"
+                        class="redes" />
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro" />
                 </div>
             </div>
-            <hr>
+            <hr />
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços </a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        function trocarAno() {
+            // Pega o valor (o ano) do <select>
+            var anoSelecionado = document.getElementById('selectAno').value;
+            
+            // Redireciona a página para a URL do dashboard,
+            // passando o novo ano como parâmetro na URL.
+            window.location.href = '/dashboard?ano=' + anoSelecionado;
+        }
+        function trocarAnoAdm() {
+            // Pega o valor (o ano) do <select>
+            var anoSelecionado = document.getElementById('selectAno').value;
+            
+            // Redireciona a página para a URL do dashboard do admin,
+            // passando o novo ano como parâmetro na URL.
+            window.location.href = '/admin/dashboard/' + '{{ session["visualizar_usuario_cpf"] }}' + '?ano=' + anoSelecionado;
+        }
+    </script>
 </body>
 
 </html>

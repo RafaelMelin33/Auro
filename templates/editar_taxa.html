@@ -4,22 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - Adicionar Taxa</title>
+    <title>Auro - Editar Taxa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon">
 </head>
 
 <body>
-    <header class="d-flex between header_dash">
-        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
-                alt="icone menu hamburguer"></button>
-        <nav class="d-flex around fechado" id="nav">
-            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
-            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
-            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+    <header class="d-flex between">
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}"
+                alt="logo"></a>
+        <nav class="d-flex around">
+            <a href="{{ url_for('index') }}">Nossos serviços</a>
+            <a href="{{ url_for('index') }}">Quem somos</a>
+            <a href="{{ url_for('index') }}">Como funciona</a>
             <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
                 <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
                         src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
                         alt="Foto de Perfil"
@@ -28,33 +31,39 @@
             </div>
         </nav>
     </header>
+
     <main>
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         <div class="flash-messages">
+        
             {% for category, message in messages %}
+            <div class="img-{{category}}"></div>
             <div class="flash {{ category }}">{{ message }}</div>
             {% endfor %}
         </div>
         {% endif %}
         {% endwith %}
-
         <section class="fundo formata_altura d-flex center">
             <div class="fundo_form">
-                <h2 class="d-flex center">Adicionar Taxa</h2>
-                <form action="{{ url_for('cadastrar_taxa') }}" method="POST">
+                <h2 class="d-flex center">Editar Taxa</h2>
+
+                <!-- Formulário com os dados já carregados -->
+                <form action="{{ url_for('editar_taxa', id_taxa=taxa[0]) }}" method="POST">
                     <label for="descricao">Descrição</label>
-                    <input placeholder="Ex: Taxa de juros mensal" type="text" name="descricao" id="descricao" onblur="maiuscula()" oninput="validaEspaco()" maxlength="20" required>
+                    <input type="text" id="descricao" name="descricao" value="{{ taxa[1] }}" placeholder="Ex: Taxa administrativa" onblur="maiuscula()" oninput="validaEspaco()" maxlength="20" required>
 
-                    <label for="valor">Valor (%)</label>
-                    <input placeholder="Digite o valor ex: 2.5" type="number" step="0.01" min="0" name="valor" id="valor"  required>
+                    <label for="valor">Valor</label>
+                    <input type="number" step="0.01" id="valor" name="valor" value="{{ taxa[2] }}" placeholder="Ex: 100.00" required min="0">
 
-                    <button type="submit">Adicionar Taxa</button>
-                    <a class="d-flex center btn_cancelar" href="{{ url_for('perfil_admin') }}">Cancelar</a>
+                    <div class="d-flex center">
+                        <button type="submit" class="botao">Salvar Alterações</button>
+                    </div>
                 </form>
             </div>
         </section>
     </main>
+
     <footer>
         <small>
             <div class="d-flex around footer_infos">
@@ -62,7 +71,8 @@
                     <p>ACOMPANHE:</p>
                     <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp" class="redes">
                     <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin" class="redes">
-                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram" class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
                     <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook" class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
@@ -75,13 +85,15 @@
             </div>
             <hr>
             <nav>
-                <a href="{{ url_for('index') }}#servicos">Nossos Serviços </a><span>|</span>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
                 <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
                 <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
+    
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
+</body> 
+
 </html>

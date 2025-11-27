@@ -5,27 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - login</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between header_dash">
-        <a href="{{ url_for('index') }}"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}" alt="logo"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
                 alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
             <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
             <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
-            <div class="d-flex center">
-                <a href="{{ url_for('abrir_login') }}" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
+            <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf_usuario']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
                 <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
     <main>
+        <input type="hidden" id="etapa_atual" value="{{ etapa|default(1) }}">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         <div class="flash-messages">
@@ -37,55 +46,79 @@
         {% endwith %}
         <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
-            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
-                    alt="icone menu hamburguer"></button>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="{{ url_for('static', filename='img/seta_icon.png') }}" alt="icone menu hamburguer"></button>
         </div>
         <section class="d-flex fundo_dash formata_altura">
             <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
+                {% if session.get('tipo_usuario') == 0 %}
                 <a href="{{ url_for('dashboard') }}" class="btn">Geral</a>
                 <a href="{{ url_for('dashboard_simulacao') }}" class="btn selecionado">Simulação</a>
                 <a href="{{ url_for('dashboard_historico') }}" class="btn">Histórico</a>
                 <a href="{{ url_for('dashboard_extrato') }}" class="btn">Extrato</a>
+                {% else %}
+                <a href="{{ url_for('admin_dashboard', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Geral</a>
+                <a href="{{ url_for('admin_dashboard_simulacao', cpf=session['visualizar_usuario_cpf']) }}" class="btn selecionado">Simulação</a>
+                <a href="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Histórico</a>
+                <a href="{{ url_for('admin_dashboard_extrato', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Extrato</a>
+                {% endif %}
             </nav>
             <div class="infos_dash d-flex column">
                 <div class="container_cards d-flex between">
 
 
-                    <div class="fundo_form emprestimo">
+                    <div class="fundo_form emprestimo" id="emprestimo">
                         <h2 class="d-flex center">Simular empréstimo</h2>
-                        <form action="{{ url_for('dashboard_simulacao') }}" method="POST">
+                        {% if session.get('tipo_usuario') == 0 %}
+                        <form action="{{ url_for('dashboard_simulacao_analise') }}" method="POST">
+                        {% else %}
+                        <form action="{{ url_for('admin_dashboard_simulacao_analise', cpf=session['visualizar_usuario_cpf']) }}" method="POST">
+                        {% endif %}
                             <label for="valor">Valor</label>
-                            <input type="number" name="valor" id="valor" step="0.01" placeholder="Valor total do emprestimo" required>
+                            <input type="number" name="valor" id="valor" placeholder="Valor total do emprestimo" value="{{valor}}" min="1" step="0.01" required>
                             <label for="parcelas">Parcelas</label>
-                            <input type="number" name="parcelas" id="parcelas" placeholder="Quantidade de parcelas" required>
+                            <input type="number" name="parcelas" id="parcelas" placeholder="Quantidade de parcelas" value="{{parcelas}}" min="1" step="1" required>
                             <label for="data">Data</label>
-                            <input type="date" name="data" id="data" required>
-                            <button id="btn_simular" type="submit">Simular empréstimo</button>
+                            <input type="date" name="data" id="data" value="{{data}}" disabled>
+                            <button type="submit" id="btn_simular">Simular empréstimo</button>
                         </form>
                     </div>
                     
-
-                    <div class="fundo_form emprestimo">
+                    <div class="fundo_form emprestimo" id="analise">
                         <h2 class="d-flex center">Análise</h2>
-
-                        <form action="{{ url_for('dashboard_simulacao') }}" method="POST">
+                        {% if session.get('tipo_usuario') == 0 %}
+                        <form action="{{ url_for('confirmar_emprestimo') }}" method="POST">
+                        {% else %}
+                        <form action="{{ url_for('admin_confirmar_emprestimo', cpf=session['visualizar_usuario_cpf']) }}" method="POST">
+                        {% endif %}
+                            <input type="hidden" name="valor" value="{{ valor | default(0) }}">
+                            <input type="hidden" name="parcelas" value="{{ parcelas | default(0) }}">
+                            <input type="hidden" name="valor_total" value="{{ valor_total | default(0) }}">
+                            <input type="hidden" name="pmt" value="{{ pmt | default(0) }}">
+                            
                             <label for="valor_mensal">Valor Mensal</label>
-                            <input type="text" name="valor_mensal_display" id="valor_mensal" value="{{ "%.2f"|format(valor_mensal) if valor_mensal is defined else '' }}" readonly>
-                            <input type="hidden" name="valor_mensal" value="{{ valor_mensal if valor_mensal is defined else '' }}">
-
-                            <label for="valor_total">Valor Total</label>
-                            <input type="text" name="valor_total_display" id="valor_total" value="{{ "%.2f"|format(valor_total) if valor_total is defined else '' }}" readonly>
-                            <input type="hidden" name="valor_total" value="{{ valor_total if valor_total is defined else '' }}">
-
-                            <label for="comprometimento">Comprometimento (%)</label>
-                            <input type="text" name="comprometimento_display" id="comprometimento" value="{% if comprometimento is defined and comprometimento is not none %}{{ "%.2f"|format(comprometimento) }}{% else %}N/A{% endif %}" readonly>
-                            <input type="hidden" name="comprometimento" value="{{ comprometimento if comprometimento is defined and comprometimento is not none else '' }}">
-
-                            <label for="risco">Risco</label>
-                            <input type="text" name="risco_display" id="risco" value="{{ risco if risco is defined else '' }}" readonly>
-                            <input type="hidden" name="risco" value="{{ risco if risco is defined else '' }}">
-
-                            <button type="submit">Confirmar</button>
+                            <input type="number" name="valor_mensal" id="valor_mensal" value="{{ pmt | default(0) }}" disabled>
+                            <label for="valor_total_display">Valor Total</label>
+                            <input type="number" name="valor_total_display" id="valor_total_display" value="{{ valor_total | default(0) }}" disabled>
+                            <label for="comprometimento">Comprometimento</label>
+                            {% if comprometimento %}
+                                {% if comprometimento >= 100 %}
+                                <input type="text" name="comprometimento" id="comprometimento" value="100%" class="negativo" disabled>
+                                {% elif comprometimento > 35 %}
+                                <input type="text" name="comprometimento" id="comprometimento" value="{{ comprometimento | default(0) }}%" class="negativo" disabled>
+                                {% else %}
+                                <input type="text" name="comprometimento" id="comprometimento" value="{{ comprometimento | default(0) }}%" disabled>
+                                {% endif %}
+                            {% else %}
+                            <input type="text" name="comprometimento" id="comprometimento" value="{{ comprometimento | default(0) }}%" disabled>
+                            {% endif %}
+                            <label for="riscos">Riscos</label>
+                            <input type="text" name="riscos" id="riscos" value="{{ risco | default('') }}" disabled>
+                            
+                            {% if risco == 'Baixo' or risco == 'Médio' %}
+                            <button type="submit">Realizar emprestimo</button>
+                            {% else %}
+                            <button type="button" disabled>Realizar emprestimo</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -96,29 +129,45 @@
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp" class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin" class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook" class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="{{ url_for('index') }}#servicos">Nossos Serviços </a><span>|</span>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
                 <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
                 <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        window.onload = function (){
+            let etapa = document.getElementById('etapa_atual').value
+            let analise = document.getElementById('analise').style
+            let emprestimo = document.getElementById('emprestimo').style
+            analise.display = 'none'
+            if(etapa == 1){
+                emprestimo.margin = 'auto'
+            } else {
+                analise.display = 'block'
+                emprestimo.margin = '0'
+            }
+        }
+    </script>
 </body>
 
 </html>

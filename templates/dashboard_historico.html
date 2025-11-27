@@ -5,76 +5,342 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auro - dashboard histórico</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between header_dash">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}"
+                alt="logo"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img
+                src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
+                alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html#servicos">Nossos serviços</a>
-            <a href="index.html#sobre">Quem somos</a>
-            <a href="index.html#como_funciona">Como funciona</a>
-            <div class="d-flex center">
-                <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf_usuario']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <div class="faixa_dash d-flex between">
             <h2>Dashboard</h2>
-            <button onclick="menuDash()" id="menu_hamburguer_dash"><img src="../static/img/seta_icon.png"
-                    alt="icone menu hamburguer"></button>
+            <button onclick="menuDash()" id="menu_hamburguer_dash"><img
+                    src="{{ url_for('static', filename='img/seta_icon.png') }}" alt="icone menu hamburguer"></button>
         </div>
-        <section class="d-flex fundo_dash formata_altura">
-            
+        <section class="d-flex fundo_dash formata_altura dash_movimenta">
             <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
-                <a href="dashboard.html" class="btn">Geral</a>
-                <a href="dashboard_simulacao.html" class="btn">Simulação</a>
-                <a href="dashboard_historico.html" class="btn selecionado">Histórico</a>
-                <a href="dashboard_movimentacoes.html" class="btn">Movimentações</a>
+                {% if session.get('tipo_usuario') == 0 %}
+                <a href="{{ url_for('dashboard') }}" class="btn">Geral</a>
+                <a href="{{ url_for('dashboard_simulacao') }}" class="btn">Simulação</a>
+                <a href="{{ url_for('dashboard_historico') }}" class="btn selecionado">Histórico</a>
+                <a href="{{ url_for('dashboard_extrato') }}" class="btn">Extrato</a>
+                {% else %}
+                <a href="{{ url_for('admin_dashboard', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Geral</a>
+                <a href="{{ url_for('admin_dashboard_simulacao', cpf=session['visualizar_usuario_cpf']) }}"
+                    class="btn">Simulação</a>
+                <a href="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                    class="btn selecionado">Histórico</a>
+                <a href="{{ url_for('admin_dashboard_extrato', cpf=session['visualizar_usuario_cpf']) }}"
+                    class="btn">Extrato</a>
+                {% endif %}
             </nav>
-            <div class="infos_dash d-flex column">
-                <div class="container_cards d-flex column center">
-                    <h2>Histórico de empréstimo</h2>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
-                    </div>
-                    <div class="card_historico d-flex between">
-                        <p>R$0,00</p>
-                        <p>Risco: baixo</p>
-                        <p><span class="some_c">Data de v</span><span class="aparece_c">V</span>encimento: 01/01/2025</p>
+            <div class="infos_dash d-flex column infos_historico">
+                <div class="meses d-flex">
+                    {% if session.get('tipo_usuario') == 0 %}
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="01">
+                        <button type="submit" class="btn_mes jan" id="mes1">Janeiro</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="02">
+                        <button type="submit" class="btn_mes" id="mes2">Fevereiro</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="03">
+                        <button type="submit" class="btn_mes" id="mes3">Março</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="04">
+                        <button type="submit" class="btn_mes" id="mes4">Abril</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="05">
+                        <button type="submit" class="btn_mes" id="mes5">Maio</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="06">
+                        <button type="submit" class="btn_mes" id="mes6">Junho</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="07">
+                        <button type="submit" class="btn_mes" id="mes7">Julho</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="08">
+                        <button type="submit" class="btn_mes" id="mes8">Agosto</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="09">
+                        <button type="submit" class="btn_mes" id="mes9">Setembro</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="10">
+                        <button type="submit" class="btn_mes" id="mes10">Outubro</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="11">
+                        <button type="submit" class="btn_mes" id="mes11">Novembro</button>
+                    </form>
+                    <form action="{{ url_for('dashboard_historico') }}" method="POST">
+                        <input type="hidden" name="mes" id="mes" value="12">
+                        <button type="submit" class="btn_mes dez" id="mes12">Dezembro</button>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="01">
+                        <button type="submit" class="btn_mes jan" id="mes1">Janeiro</button>
+                    </form>
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="02">
+                        <button type="submit" class="btn_mes" id="mes2">Fevereiro</button>
+                    </form>
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="03">
+                        <button type="submit" class="btn_mes" id="mes3">Março</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="04">
+                        <button type="submit" class="btn_mes" id="mes4">Abril</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="05">
+                        <button type="submit" class="btn_mes" id="mes5">Maio</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="06">
+                        <button type="submit" class="btn_mes" id="mes6">Junho</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="07">
+                        <button type="submit" class="btn_mes" id="mes7">Julho</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="08">
+                        <button type="submit" class="btn_mes" id="mes8">Agosto</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="09">
+                        <button type="submit" class="btn_mes" id="mes9">Setembro</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="10">
+                        <button type="submit" class="btn_mes" id="mes10">Outubro</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="11">
+                        <button type="submit" class="btn_mes" id="mes11">Novembro</button>
+                    </form>
+
+                    <form action="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}"
+                        method="POST">
+                        <input type="hidden" name="mes" id="mes" value="12">
+                        <button type="submit" class="btn_mes dez" id="mes12">Dezembro</button>
+                    </form>
+                    {% endif %}
+                </div>
+
+
+                {% if session.get('tipo_usuario') == 0 %}
+                <select name="selectMes" id="selectMes" class="meses_select" onchange="trocarMes()">
+                {% else %}
+                <select name="selectMes" id="selectMes" class="meses_select" onchange="trocarMesAdm()">
+                {% endif %}
+                    <option value="" disabled {% if not mes %}selected{% endif %}>Escolha o mês</option>
+                    <option value="1" {% if mes==1 %}selected{% endif %}>Janeiro</option>
+                    <option value="2" {% if mes==2 %}selected{% endif %}>Fevereiro</option>
+                    <option value="3" {% if mes==3 %}selected{% endif %}>Março</option>
+                    <option value="4" {% if mes==4 %}selected{% endif %}>Abril</option>
+                    <option value="5" {% if mes==5 %}selected{% endif %}>Maio</option>
+                    <option value="6" {% if mes==6 %}selected{% endif %}>Junho</option>
+                    <option value="7" {% if mes==7 %}selected{% endif %}>Julho</option>
+                    <option value="8" {% if mes==8 %}selected{% endif %}>Agosto</option>
+                    <option value="9" {% if mes==9 %}selected{% endif %}>Setembro</option>
+                    <option value="10" {% if mes==10 %}selected{% endif %}>Outubro</option>
+                    <option value="11" {% if mes==11 %}selected{% endif %}>Novembro</option>
+                    <option value="12" {% if mes==12 %}selected{% endif %}>Dezembro</option>
+                </select>
+                <div class="dash_historico d-flex center">
+                    <input type="hidden" value="{{ mes }}" id="pegaMes">
+                    <div class="receitas">
+                        <div class="d-flex ">
+                            {% if receita or despesa %}
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Receitas</h3>
+                                    </div>
+                                    <p class="positivo">R$ {{ "{:,.2f}".format(receita) }}</p>
+                                </div>
+                            </div>
+                            {% if saldo >= 0 %}
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Saldo</h3>
+                                    </div>
+                                    <p class="positivo">R$ {{ "{:,.2f}".format(saldo) }}</p>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Saldo</h3>
+                                    </div>
+                                    <p class="negativo">R$ {{ "{:,.2f}".format(saldo) }}</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Despesas</h3>
+                                    </div>
+                                    <p class="negativo">R$ {{ "{:,.2f}".format(despesa) }}</p>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Receitas</h3>
+                                    </div>
+                                    <p class="positivo">R$ 0.00</p>
+                                </div>
+                            </div>
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Saldo</h3>
+                                    </div>
+                                    <p class="positivo">R$ 0.00</p>
+                                </div>
+                            </div>
+
+                            <div class="container_cards">
+                                <div class="card_valores">
+                                    <div class="d-flex between">
+                                        <h3>Despesas</h3>
+                                    </div>
+                                    <p class="negativo">R$ 0.00</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="card_historico">
+                            <div class="card_receita d-flex around cabecalho_historico">
+                                <p>Valor</p>
+                                <p>Data</p>
+                                <p>Tipo</p>
+                            </div>
+                            {% if movimentacoes %}
+                            {% for movimentacao in movimentacoes %}
+                            {% if movimentacao[2] == 1 %}
+                            <div class="card_receita d-flex center" title="{{movimentacao[4]}}">
+                                <p class="positivo">R$ {{ "{:,.2f}".format( movimentacao[0] ) }}</p>
+                                <p>{{ movimentacao[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Variável</p>
+                            </div>
+                            {% elif movimentacao[2] == 0 %}
+                            <div class="card_receita d-flex center" title="{{movimentacao[4]}}">
+                                <p class="negativo">R$ -{{ "{:,.2f}".format( movimentacao[0] ) }}</p>
+                                <p>{{ movimentacao[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Variável</p>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% if parcelas %}
+                            {% for parcela in parcelas %}
+                            {% if parcela[2] == 1 %}
+                            <div class="card_receita d-flex center" title="{{parcela[4]}}">
+                                <p class="positivo">R$ {{ "{:,.2f}".format( parcela[0] ) }}</p>
+                                <p>{{ parcela[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Valor emprestimo</p>
+                            </div>
+                            {% elif parcela[2] == 0 %}
+                            <div class="card_receita d-flex center" title="{{parcela[4]}}">
+                                <p class="negativo">R$ -{{ "{:,.2f}".format( parcela[0] ) }}</p>
+                                <p>{{ parcela[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Parcela emprestimo</p>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% if fixas %}
+                            {% for fixa in fixas %}
+                            {% if fixa[2] == 1 %}
+                            <div class="card_receita d-flex center" title="{{fixa[4]}}">
+                                <p class="positivo">R$ {{ "{:,.2f}".format( fixa[0] ) }}</p>
+                                <p>{{ fixa[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Fixo</p>
+                            </div>
+                            {% elif fixa[2] == 0 %}
+                            <div class="card_receita d-flex center" title="{{fixa[4]}}">
+                                <p class="negativo">R$ -{{ "{:,.2f}".format( fixa[0] ) }}</p>
+                                <p>{{ fixa[1].strftime("%d/%m/%Y") }}</p>
+                                <p>Fixo</p>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <p class="nenhum">Nenhuma movimentação cadastrada.</p>
+                            {% endif %}
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -85,29 +351,52 @@
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook"
+                        class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        function trocarMes() {
+            // Pega o valor (o ano) do <select>
+            var mesSelecionado = document.getElementById('selectMes').value;
+
+            // Redireciona a página para a URL do dashboard,
+            // passando o novo ano como parâmetro na URL.
+            window.location.href = '/dashboard_historico?mes=' + mesSelecionado;
+        }
+        function trocarMesAdm() {
+            // Pega o valor (o ano) do <select>
+            var mesSelecionado = document.getElementById('selectMes').value;
+
+            // Redireciona a página para a URL do dashboard,
+            // passando o novo ano como parâmetro na URL.
+            window.location.href = '/admin/dashboard_historico/' + '{{ session["visualizar_usuario_cpf"] }}' + '?mes=' + mesSelecionado;
+        }
+    </script>
 </body>
 
 </html>

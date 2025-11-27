@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="[translate:pt-br]">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auro - login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
+</head>
+
+<body>
+    <header class="d-flex between header_dash">
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}" alt="logo" /></a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}" alt="icone menu hamburguer" /></button>
+        <nav class="d-flex around fechado" id="nav">
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <div class="d-flex center opicoes-nav">
+                {% if session['tipo_usuario'] == 0 %}
+                <a href="{{ url_for('editar_usuario', cpf=session['cpf_usuario']) }}" class="btn editar-fora-perfil">
+                    <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icone editar">
+                </a>
+                {% endif %}
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <div class="faixa_dash d-flex between">
+            <h2>Dashboard</h2>
+            <button onclick="menuDash()" id="menu_hamburguer_dash">
+                <img src="{{ url_for('static', filename='img/seta_icon.png') }}" alt="icone menu hamburguer" />
+            </button>
+        </div>
+
+        <section class="d-flex fundo_dash formata_altura dash_movimenta">
+            <nav class="nav_dash d-flex column center around fechado" id="nav_dash">
+                {% if session.get('tipo_usuario') == 0 %}
+                <a href="{{ url_for('dashboard') }}" class="btn">Geral</a>
+                <a href="{{ url_for('dashboard_simulacao') }}" class="btn">Simulação</a>
+                <a href="{{ url_for('dashboard_historico') }}" class="btn">Histórico</a>
+                <a href="{{ url_for('dashboard_extrato') }}" class="btn selecionado">Extrato</a>
+                {% else %}
+                <a href="{{ url_for('admin_dashboard', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Geral</a>
+                <a href="{{ url_for('admin_dashboard_simulacao', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Simulação</a>
+                <a href="{{ url_for('admin_dashboard_historico', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Histórico</a>
+                <a href="{{ url_for('admin_dashboard_extrato', cpf=session['visualizar_usuario_cpf']) }}" class="btn">Extrato</a>
+                {% endif %}
+            </nav>
+
+            <div class="infos_dash d-flex">
+                <div class="receitas">
+                    <div class="container_cards">
+                        <div class="card_valores">
+                            <div class="d-flex between">
+                                <h3>Receitas</h3>
+                                <div>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('cadastrar_receita') }}" class="adicionar_receita">+</a>
+                                    {% else %}
+                                    <a href="{{ url_for('admin_cadastrar_receita', cpf=session['visualizar_usuario_cpf']) }}" class="adicionar_receita">+</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="positivo">R$ {{ "{:,.2f}".format(total_receitas) }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card_extratos">    
+                        {% for receita in receitas %}
+                        <div class="card_receita d-flex column">
+                            <div class="d-flex between">
+                                <h3>{{ receita[0] }}</h3>
+                                <p>{{ receita[2].strftime('%d/%m/%Y') }}</p>
+                            </div>
+                            <div class="d-flex between">
+                                <p>R$ {{ "{:,.2f}".format(receita[1]) }}</p>
+                                {% if receita[4] != 2 %}
+                                <div>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('deletar_receita', id_movimentacao=receita[3]) }}" class="excluir">
+                                    {% else %}
+                                    <a href="{{ url_for('admin_deletar_receita', cpf=session['visualizar_usuario_cpf'], id_movimentacao=receita[3]) }}" class="excluir">
+                                    {% endif %}
+                                        <img src="{{ url_for('static', filename='img/delete_icon.png') }}" alt="icon deletar" />
+                                    </a>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('editar_receita', id_movimentacao=receita[3]) }}" class="editar">
+                                    {% else %}
+                                    <a href="{{ url_for('admin_editar_receita', cpf=session['visualizar_usuario_cpf'], id_movimentacao=receita[3]) }}" class="editar">
+                                    {% endif %}
+                                        <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icon editar" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <p class="nenhum">Nenhuma receita cadastrada.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="despesas">
+                    <div class="container_cards">
+                        <div class="card_valores">
+                            <div class="d-flex between">
+                                <h3>Despesas</h3>
+                                <div>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('cadastrar_despesa') }}" class="adicionar_despesa">+</a>
+                                    {% else %}
+                                    <a href="{{ url_for('admin_cadastrar_despesa', cpf=session['visualizar_usuario_cpf']) }}" class="adicionar_despesa">+</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="negativo">R$ {{ "{:,.2f}".format(total_despesas) }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card_extratos">    
+                        {% for despesa in despesas %}
+                        <div class="card_despesa d-flex column">
+                            <div class="d-flex between">
+                                <h3>{{ despesa[0] }}</h3>
+                                <p>{{ despesa[2].strftime('%d/%m/%Y') }}</p>
+                            </div>
+                            <div class="d-flex between">
+                                <p>R$ {{ "{:,.2f}".format(despesa[1]) }}</p>
+                                {% if despesa[4] != 2 %}
+                                <div>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('deletar_despesa', id_movimentacao=despesa[3]) }}" class="excluir">
+                                    {% else %}
+                                    <a href="{{ url_for('admin_deletar_despesa', cpf=session['visualizar_usuario_cpf'], id_movimentacao=despesa[3]) }}" class="excluir">
+                                    {% endif %}
+                                        <img src="{{ url_for('static', filename='img/delete_icon.png') }}" alt="icon deletar" />
+                                    </a>
+                                    {% if session.get('tipo_usuario') == 0 %}
+                                    <a href="{{ url_for('editar_despesa', id_movimentacao=despesa[3]) }}" class="editar">
+                                    {% else %}
+                                    <a href="{{ url_for('admin_editar_despesa', cpf=session['visualizar_usuario_cpf'], id_movimentacao=despesa[3]) }}" class="editar">
+                                    {% endif %}
+                                        <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icon editar" />
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <p class="nenhum">Nenhuma despesa cadastrada.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <small>
+            <div class="d-flex around footer_infos">
+                <div class="d-flex center">
+                    <p>ACOMPANHE:</p>
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp" class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin" class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook" class="redes">
+                </div>
+                <div class="d-flex column center footer_endereco">
+                    <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
+                    <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
+                </div>
+                <div class="logo_footer">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
+                </div>
+            </div>
+            <hr>
+            <nav>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            </nav>
+            <p>© 2025 Auro. Todos os direitos reservados</p>
+        </small>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

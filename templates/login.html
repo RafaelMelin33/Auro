@@ -1,71 +1,97 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <title>Auro - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
 </head>
 
 <body>
-    <!-- <div class="escuro"></div> -->
     <header class="d-flex between">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png" alt="icone menu hamburguer"></button>
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}"
+                alt="logo"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img
+                src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}"
+                alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html">Nossos serviços</a>
-            <a href="index.html">Quem somos</a>
-            <a href="index.html">Como funciona</a>
-            <a href="login.html" id="logar">Acessar minha conta</a>
-            <!-- <a href="perfil.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a> -->
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <a href="{{ url_for('abrir_login') }}" class="logar">Acessar minha conta</a>
         </nav>
     </header>
+
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
         <section class="fundo_com_chapeu">
             <div class="fundo_form">
-                <h2 class="d-flex center"><a href="perfil_adm.html">Acesse o sistema</a></h2>
-                <form action="">
+                <h2 class="d-flex center">Acesse o sistema</h2>
+
+                <form action="{{ url_for('login') }}" method="post">
                     <label for="cpf">CPF</label>
-                    <input type="number" name="cpf" id="cpf" placeholder="Digite seu CPF">
+                    <input type="text" name="cpf" id="cpf" minlength="11" maxlength="11" pattern="\d{11}"
+                        placeholder="Digite seu CPF" oninput="this.value = this.value.replace(/\D/g , '')" required value="{{ request.form.get('cpf', '') }}">
+
                     <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha">
-                    <a href="cadastro.html">* Cadastre-se já</a>
-                    <a href="perfil.html"><button type="button">Login</button></a>
+                    <div class="div_senha">
+                        <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+                        <img src="{{ url_for('static', filename='img/icon_olho_fechado.png') }}" alt="icon olho fechado"
+                            id="olho_fechado_s" onclick="verSenha()">
+                        <img src="{{ url_for('static', filename='img/icon_olho_aberto.png') }}" alt="icon olho aberto"
+                            id="olho_aberto_s" onclick="verSenha()">
+                    </div>
+                    <a href="{{ url_for('abrir_cadastro') }}">* Cadastre-se já</a>
+                    <button type="submit">Login</button>
                 </form>
             </div>
         </section>
     </main>
+
     <footer>
         <small>
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram"
+                        class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook"
+                        class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 
 </html>

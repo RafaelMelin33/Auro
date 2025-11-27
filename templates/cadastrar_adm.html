@@ -4,74 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - editarusuario</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
+    <title>Auro - Cadastrar Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
 </head>
 
 <body>
     <header class="d-flex between header_dash">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
-                alt="icone menu hamburguer"></button>
+        <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo_escura.png') }}" alt="logo"></a>
+        <button onclick="menu()" id="menu_hamburguer"><img src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}" alt="icone menu hamburguer"></button>
         <nav class="d-flex around fechado" id="nav">
-            <a href="index.html#servicos">Nossos serviços</a>
-            <a href="index.html#sobre">Quem somos</a>
-            <a href="index.html#como_funciona">Como funciona</a>
-            <div class="d-flex center">
-                <a href="perfil_adm.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
+            <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+            <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+            <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+            <div class="d-flex center opicoes-nav">
+                <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+                        src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+                        alt="Foto de Perfil"
+                        onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+                <a href="{{ url_for('logout') }}" class="logar">Sair</a>
             </div>
         </nav>
     </header>
+
     <main>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
         <section class="fundo">
             <div class="fundo_form cadastrar_adm">
                 <h2 class="d-flex center">Adicionar administrador</h2>
-                <form action="">
+                <form action="{{ url_for('cadastrar_adm') }}" method="POST">
                     <label for="nome">Nome</label>
-                    <input placeholder="Digite o nome" type="text" name="nome" >   
+                    <input type="text" name="nome" id="nome" placeholder="Digite o nome" oninput="validaEspaco()" required value="{{ request.form.get('nome', '') }}">
+
                     <label for="cpf">CPF</label>
-                    <input placeholder="Digite o CPF" type="number" name="cpf" >
+                    <input type="text" name="cpf" id="cpf"
+                           minlength="11" maxlength="11" pattern="\d{11}"
+                           placeholder="Digite o CPF" required
+                           value="{{ request.form.get('cpf', '') }}">
+
                     <label for="email">Email</label>
-                    <input placeholder="Digite o email" type="email" name="email" >
+                    <input type="email" name="email" id="email" 
+                           placeholder="Digite o email" required
+                           value="{{ request.form.get('email', '') }}">
+
                     <label for="senha">Senha</label>
-                    <input placeholder="Digite a senha" type="password" name="senha" >
-                    <a href="perfil_adm.html"><button type="button">Cadastrar ADM</button></a>
-                    <a class="d-flex center btn_cancelar" href="perfil_adm.html">Cancelar</a>
+                    <div class="div_senha">
+                        <input type="password" name="senha" id="senha" placeholder="Digite sua senha" oninput="validaEspacoSenha()"
+                            required>
+                        <img src="{{ url_for('static', filename='img/icon_olho_fechado.png') }}" alt="icon olho fechado" id="olho_fechado_s"
+                            onclick="verSenha()">
+                        <img src="{{ url_for('static', filename='img/icon_olho_aberto.png') }}" alt="icon olho aberto" id="olho_aberto_s"
+                            onclick="verSenha()">
+                    </div>
+
+                    <button type="submit">Cadastrar ADM</button>
+                    <a class="d-flex center btn_cancelar" href="{{ url_for('perfil_admin') }}">Cancelar</a>
                 </form>
             </div>
         </section>
     </main>
+
     <footer>
         <small>
             <div class="d-flex around footer_infos">
                 <div class="d-flex center">
                     <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
+                    <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp" class="redes">
+                    <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin" class="redes">
+                    <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram" class="redes">
+                    <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook" class="redes">
                 </div>
                 <div class="d-flex column center footer_endereco">
                     <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
                     <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
                 </div>
                 <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
+                    <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro">
                 </div>
             </div>
             <hr>
             <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
+                <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+                <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+                <a href="{{ url_for('index') }}#sobre">Quem somos</a>
             </nav>
             <p>© 2025 Auro. Todos os direitos reservados</p>
         </small>
     </footer>
-    <script src="../static/js/script.js"></script>
-</body>
 
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
 </html>

@@ -1,147 +1,163 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel do Administrador</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/responsivo.css') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/Logo_favicon.png') }}" type="image/x-icon" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auro - login</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/responsivo.css">
-    <link rel="shortcut icon" href="../static/img/Logo_favicon.png" type="image/x-icon" />
-</head>
-
-<body>
+  <body>
     <header class="d-flex between header_dash">
-        <a href="index.html"><img src="../static/img/logo_escura.png" alt="logo"></a>
-        <button onclick="menu()" id="menu_hamburguer"><img src="../static/img/icon_menu_hamburguer.png"
-                alt="icone menu hamburguer"></button>
-        <nav class="d-flex around fechado" id="nav">
-            <a href="index.html#servicos">Nossos serviços</a>
-            <a href="index.html#sobre">Quem somos</a>
-            <a href="index.html#como_funciona">Como funciona</a>
-            <div class="d-flex center">
-                <a href="perfil_adm.html" id="perfil"><img src="../static/img/perfil_icon.png" alt="Icon perfil"></a>
-                <a href="index.html" id="logar">Sair</a>
-            </div>
-        </nav>
+      <a href="{{ url_for('index') }}">
+        <img src="{{ url_for('static', filename='img/logo_escura.png') }}" alt="logo" />
+      </a>
+      <button onclick="menu()" id="menu_hamburguer">
+        <img src="{{ url_for('static', filename='img/icon_menu_hamburguer.png') }}" alt="icone menu hamburguer" />
+      </button>
+      <nav class="d-flex around fechado" id="nav">
+        <a href="{{ url_for('index') }}#servicos">Nossos serviços</a>
+        <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+        <a href="{{ url_for('index') }}#como_funciona">Como funciona</a>
+        <div class="d-flex center opicoes-nav">
+          <a href="{{ url_for('perfil_cliente') }}" id="perfil"><img
+              src="{{ url_for('static', filename='uploads/' + (session['id_usuario'] | string) + '.' + session['extensao_imagem']) }}"
+              alt="Foto de Perfil"
+              onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';"></a>
+          <a href="{{ url_for('logout') }}" class="logar">Sair</a>
+        </div>
+      </nav>
     </header>
-    <main>
-        <section class="fundo formata_altura d-flex center">
-            <div class="fundo_perfil">
-                <h2>Bem-vindo 'adm'</h2>
-                <hr>
-                <div class="d-flex column adm_info">
-                    <h2>Usuários</h2>
-                    <div class="d-flex usuarios">
-                        <a href="perfil.html">
-                            <div class="fundo_cards_adm">
-                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                                <p>Nome do usuário</p>
-                            </div>
-                        </a>
-                        <a href="perfil.html">
-                            <div class="fundo_cards_adm">
-                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                                <p>Nome do usuário</p>
-                            </div>
-                        </a>
-                        <a href="perfil.html">
-                            <div class="fundo_cards_adm">
-                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                                <p>Nome do usuário</p>
-                            </div>
-                        </a>
-                        <a href="perfil.html">
-                            <div class="fundo_cards_adm">
-                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                                <p>Nome do usuário</p>
-                            </div>
-                        </a>
-                        <a href="perfil.html">
-                            <div class="fundo_cards_adm">
-                                <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                                <p>Nome do usuário</p>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <hr>
-                <div class="d-flex column adm_info">
-                    <dv class="d-flex">
-                        <h2>Adiministradores</h2>
-                        <a href="cadastrar_adm.html" class="adicionar_adm">+</a>
-                    </dv>
-                    <div class="d-flex adms">
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do administrador</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do administrador</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do administrador</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <img src="../static/img/perfil_icon.png" alt="icon perfil">
-                            <p>Nome do administrador</p>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="d-flex column adm_info">
-                    <div class="d-flex">
-                        <h2>Taxas</h2>
-                        <a href="adicionar_taxa.html" class="adicionar_taxa">+</a>
-                    </div>
-                    <div class="d-flex taxas">
-                        <div class="fundo_cards_adm">
-                            <p>2025</p>
-                            <p>R$ 0,00</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <p>2024</p>
-                            <p>R$ 0,00</p>
-                        </div>
-                        <div class="fundo_cards_adm">
-                            <p>2023</p>
-                            <p>R$ 0,00</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <small>
-            <div class="d-flex around footer_infos">
-                <div class="d-flex center">
-                    <p>ACOMPANHE:</p>
-                    <img src="../static/img/whatsapp_icon.png" alt="icon whatsapp" class="redes">
-                    <img src="../static/img/linkedin_icon.png" alt="icon linkedin" class="redes">
-                    <img src="../static/img/instagram_icon.png" alt="icon instagram" class="redes">
-                    <img src="../static/img/facebook_icon.png" alt="icon facebook" class="redes">
-                </div>
-                <div class="d-flex column center footer_endereco">
-                    <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
-                    <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
-                </div>
-                <div class="logo_footer">
-                    <img src="../static/img/logo_clara.png" alt="logo auro">
-                </div>
-            </div>
-            <hr>
-            <nav>
-                <a href="index.html#servicos">Nossos Serviços </a><span>|</span>
-                <a href="index.html#como_funciona">Como funciona</a><span>|</span>
-                <a href="index.html#sobre">Quem somos</a>
-            </nav>
-            <p>© 2025 Auro. Todos os direitos reservados</p>
-        </small>
-    </footer>
-    <script src="../static/js/script.js"></script>
-</body>
 
+    <main>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      <section class="fundo formata_altura d-flex center">
+        <div class="fundo_perfil">
+          <div class="d-flex between header_perfil_adm">
+            <h2>Bem-vindo administrador, {{ session['nome_usuario'] }}</h2>
+            <a href="{{ url_for('gerar_relatorio_emprestimos') }}" class="btn">Gerar Relatório de Empréstimos</a>
+          </div>
+          <hr/>
+
+          <div class="d-flex column adm_info">
+            <h2>Usuários</h2>
+            <div class="d-flex usuarios">
+              {% for usuario in usuarios %}
+                <div class="fundo_cards_adm" onclick="window.location.href='{{ url_for('visualizar_usuario', cpf=usuario[1]) }}'">
+                  <img class="perfil_img" src="{{ url_for('static', filename='uploads/' + (usuario[2] | string) + '.' + extensoes_usuarios[usuario[2]]) }}" alt="Foto de Perfil"
+onerror="this.onerror=null; this.src='{{ url_for('static', filename='img/perfil_icon.png') }}';">
+                  <p>{{ usuario[0] }}</p>
+                </div>
+              {% else %}
+                <p>Nenhum usuário encontrado.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="d-flex column adm_info">
+            <div class="d-flex">
+              <h2>Administradores</h2>
+              <a href="{{ url_for('visualizar_adm') }}" class="adicionar_adm">+</a>
+            </div>
+            <div class="d-flex adms">
+              {% for adm in adms %}
+                <div class="fundo_cards_adm">
+                  <img src="{{ url_for('static', filename='img/perfil_icon.png') }}" alt="icon perfil" />
+                  <p>{{ adm[0] }}</p>
+                </div>
+              {% else %}
+                <p>Nenhum administrador encontrado.</p>
+              {% endfor %}
+            </div>
+          </div>
+
+          <hr />
+
+          <div class="d-flex column adm_info">
+            <div class="d-flex">
+              <h2>Taxas de Empréstimo</h2>
+              <a href="{{ url_for('visualizar_adicionar_taxa') }}" class="adicionar_taxa">+</a>
+            </div>
+            <div class="d-flex taxas">
+              {% for taxa in taxas %}
+                <div class="fundo_cards_adm {% if taxa[4] is none %}taxa_ativa{% endif %}">
+                  <div class="d-flex column">
+                    <p><strong>{{ taxa[1] }}</strong></p>
+                    <p class="valor_taxa">{{ taxa[2] }}%</p>
+                    <p class="periodo_taxa">
+                        <small>Criada em:</small> {{ taxa[3].strftime('%d/%m/%Y') }}
+                    </p>
+                    <p class="periodo_taxa">
+                      {% if taxa[4] %}
+                        <small>Acabou em:</small> {{ taxa[4].strftime('%d/%m/%Y') }}
+                      {% else %}
+                        <span class="ativa">ATIVA</span>
+                      {% endif %}
+                    </p>
+                    <div class="d-flex center botoes_taxa">
+                      {% if taxa[4] is none %}
+                        <!-- Ícone de editar (só para taxa ativa) -->
+                        <a href="{{ url_for('editar_taxa', id_taxa=taxa[0]) }}" title="Editar taxa" class="editar">
+                          <img src="{{ url_for('static', filename='img/editar_icon.png') }}" alt="icon editar" />
+                        </a>
+                      {% else %}
+                        <!-- Ícone de deletar (só para taxa inativa) -->
+                        <a href="{{ url_for('deletar_taxa', id_taxa=taxa[0]) }}" title="Deletar taxa" class="excluir">
+                          <img src="{{ url_for('static', filename='img/delete_icon.png') }}" alt="icon deletar" />
+                        </a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% else %}
+                <p>Nenhuma taxa cadastrada. Clique no botão + para adicionar a primeira taxa.</p>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>
+        <div class="d-flex around footer_infos">
+          <div class="d-flex center">
+            <p>ACOMPANHE:</p>
+            <img src="{{ url_for('static', filename='img/whatsapp_icon.png') }}" alt="icon whatsapp" class="redes" />
+            <img src="{{ url_for('static', filename='img/linkedin_icon.png') }}" alt="icon linkedin" class="redes" />
+            <img src="{{ url_for('static', filename='img/instagram_icon.png') }}" alt="icon instagram" class="redes" />
+            <img src="{{ url_for('static', filename='img/facebook_icon.png') }}" alt="icon facebook" class="redes" />
+          </div>
+          <div class="d-flex column center footer_endereco">
+            <p>Gestor Auro | CNPJ: 75.683.189.0005-12</p>
+            <p>R. Barão do Rio Branco, 750 - Centro, Birigui - SP, 16200-001</p>
+          </div>
+          <div class="logo_footer">
+            <img src="{{ url_for('static', filename='img/logo_clara.png') }}" alt="logo auro" />
+          </div>
+        </div>
+        <hr />
+        <nav>
+          <a href="{{ url_for('index') }}#servicos">Nossos Serviços</a><span>|</span>
+          <a href="{{ url_for('index') }}#como_funciona">Como funciona</a><span>|</span>
+          <a href="{{ url_for('index') }}#sobre">Quem somos</a>
+        </nav>
+        <p>© 2025 Auro. Todos os direitos reservados</p>
+      </small>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
 </html>
