@@ -1,75 +1,93 @@
-// Exibe a etapa 1 do formulário e esconde as demais
-function irEtapa1() {
-    document.getElementById("etapa1").style.display = 'flex'; // Mostra etapa 1
-    document.getElementById("etapa2").style.display = 'none'; // Esconde etapa 2
-    document.getElementById("etapa3").style.display = 'none'; // Esconde etapa 3
+const senhaCadastro = document.getElementById('senha');
+const confirmaCadastro = document.getElementById('confirmaSenha');
+const btnSubmit = document.getElementById('btnSubmit');
+
+if (senhaCadastro && confirmaCadastro) {
+    senhaCadastro.addEventListener('input', validaTudo);
+    confirmaCadastro.addEventListener('input', validaTudo);
 }
 
-// Exibe a etapa 2 do formulário e esconde as demais
-function irEtapa2() {
-    document.getElementById("etapa1").style.display = 'none'; // Esconde etapa 1
-    document.getElementById("etapa2").style.display = 'flex'; // Mostra etapa 2
-    document.getElementById("etapa3").style.display = 'none'; // Esconde etapa 3
-}
+function validaTudo() {
+    var senha = document.getElementById('senha').value;
+    var confirmarSenha = document.getElementById('confirmaSenha').value;
 
-// Exibe a etapa 3 do formulário e esconde as demais
-function irEtapa3() {
-    document.getElementById("etapa1").style.display = 'none'; // Esconde etapa 1
-    document.getElementById("etapa2").style.display = 'none'; // Esconde etapa 2
-    document.getElementById("etapa3").style.display = 'flex'; // Mostra etapa 3
-}
-
-// Valida os requisitos da senha enquanto o usuário digita
-document.getElementById('senha').addEventListener('input', function () {
-    var senha = this.value; // Obtém o valor digitado
-    // Inicialmente, todos os requisitos ficam vermelhos
     document.getElementById('minuscula').style.color = 'red';
     document.getElementById('maiuscula').style.color = 'red';
     document.getElementById('numero').style.color = 'red';
     document.getElementById('especial').style.color = 'red';
-    // Percorre cada caractere da senha
+    document.getElementById('senhasNaoCoincidem').style.color = 'red';
+    document.getElementById('senhasNaoCoincidem').innerText = '* Senhas não coincidem';
+    document.getElementById('quantidade').style.color = 'red';
+
+    // Atualiza indicadores de força
     for (let i = 0; i < senha.length; i++) {
-        const caractere = senha[i];
-        // Se encontrar letra minúscula, muda cor para verde
-        if (caractere >= 'a' && caractere <= 'z') {
+        const c = senha[i];
+        if (c >= 'a' && c <= 'z') {
             document.getElementById('minuscula').style.color = 'green';
-            // Se encontrar letra maiúscula, muda cor para verde
-        } else if (caractere >= 'A' && caractere <= 'Z') {
+        } else if (c >= 'A' && c <= 'Z') {
             document.getElementById('maiuscula').style.color = 'green';
-            // Se encontrar número, muda cor para verde
-        } else if (caractere >= '0' && caractere <= '9') {
+        } else if (c >= '0' && c <= '9') {
             document.getElementById('numero').style.color = 'green';
-            // Se encontrar caractere especial, muda cor para verde
-        } else if ('!@#$%^&*()_+[]{}|;:,.<>?'.includes(caractere)) {
+        } else if ('!@#$%^&*()_+[]{}|:;,.<>?'.includes(c)) {
             document.getElementById('especial').style.color = 'green';
         }
     }
-    senhasCoincidem(); // Chama função para verificar se as senhas coincidem
-});
 
-// Verifica se os campos de senha e confirmação são iguais
-function senhasCoincidem() {
-    var senha = document.getElementById('senha').value; // Valor da senha
-    var confirmarSenha = document.getElementById('confirmaSenha').value; // Valor da confirmação
-    document.getElementById('senhasNaoCoincidem').style.color = 'red'; // Inicialmente vermelho
-    // Se as senhas forem iguais, muda cor para verde
-    if (senha == confirmarSenha) {
-        document.getElementById('senhasNaoCoincidem').style.color = 'green';
+    if (senha.length >= 8) {
+        document.getElementById('quantidade').style.color = 'green';
     }
+
+    // Verifica coincidência
+    if (senha && senha === confirmarSenha) {
+        document.getElementById('senhasNaoCoincidem').style.color = 'green';
+        document.getElementById('senhasNaoCoincidem').innerText = '* Senhas coincidem';
+    }
+
+    // Habilita botão se todos forem verdes
+    if (document.getElementById('minuscula').style.color === 'green') {
+        okMinuscula = true;
+    }
+    if (document.getElementById('maiuscula').style.color === 'green') {
+        okMaiuscula = true;
+    }
+    if (document.getElementById('numero').style.color === 'green') {
+        okNumero = true;
+    }
+    if (document.getElementById('especial').style.color === 'green') {
+        okEspecial = true;
+    }
+    if (document.getElementById('senhasNaoCoincidem').style.color === 'green') {
+        okCoincide = true;
+    }
+    if (document.getElementById('quantidade').style.color === 'green') {
+        okQuantidade = true;
+    }
+    if (okMinuscula && okMaiuscula && okNumero && okEspecial && okCoincide && okQuantidade) {
+        btnSubmit.disabled = false;
+    } else {
+        btnSubmit.disabled = true;
+    }
+
+
+    // const okMinuscula = document.getElementById('minuscula').style.color === 'green';
+    // const okMaiuscula = document.getElementById('maiuscula').style.color === 'green';
+    // const okNumero    = document.getElementById('numero').style.color === 'green';
+    // const okEspecial  = document.getElementById('especial').style.color === 'green';
+    // const okCoincide  = document.getElementById('senhasNaoCoincidem').style.color === 'green';
+    // const okQuantidade = document.getElementById('quantidade').style.color === 'green';
+
+    // btnSubmit.disabled = !(okMinuscula && okMaiuscula && okNumero && okEspecial && okCoincide && okQuantidade);
 }
 
-// Alterna a visualização do campo de senha (mostrar/ocultar)
 function verSenha() {
-    var senhaInput = document.getElementById('senha'); // Campo senha
-    var olhoFechado = document.getElementById('olho_fechado_s'); // Ícone olho fechado
-    var olhoAberto = document.getElementById('olho_aberto_s'); // Ícone olho aberto
+    var senhaInput = document.getElementById('senha');
+    var olhoFechado = document.getElementById('olho_fechado_s');
+    var olhoAberto = document.getElementById('olho_aberto_s');
 
-    // Se o campo está oculto, mostra a senha
     if (senhaInput.type === 'password') {
         senhaInput.type = 'text';
         olhoFechado.style.display = 'none';
         olhoAberto.style.display = 'inline';
-        // Se o campo está visível, oculta a senha
     } else {
         senhaInput.type = 'password';
         olhoFechado.style.display = 'inline';
@@ -77,23 +95,128 @@ function verSenha() {
     }
 }
 
-// Alterna a visualização do campo de confirmação de senha (mostrar/ocultar)
 function verConfirmaSenha() {
-    var confirmaSenhaInput = document.getElementById('confirmaSenha'); // Campo confirmação
-    var olhoFechado = document.getElementById('olho_fechado_cs'); // Ícone olho fechado
-    var olhoAberto = document.getElementById('olho_aberto_cs'); // Ícone olho aberto
+    var confirmaSenhaInput = document.getElementById('confirmaSenha');
+    var olhoFechado = document.getElementById('olho_fechado_cs');
+    var olhoAberto = document.getElementById('olho_aberto_cs');
 
-    // Se o campo está oculto, mostra a senha
     if (confirmaSenhaInput.type === 'password') {
         confirmaSenhaInput.type = 'text';
         olhoFechado.style.display = 'none';
         olhoAberto.style.display = 'inline';
-        // Se o campo está visível, oculta a senha
     } else {
         confirmaSenhaInput.type = 'password';
         olhoFechado.style.display = 'inline';
         olhoAberto.style.display = 'none';
     }
+}
+
+// Validação do nome
+function validaEspaco() {
+    if (document.getElementById('nome')) {
+        valorInput = document.getElementById('nome')
+    } else if (document.getElementById('descricao')) {
+        valorInput = document.getElementById('descricao')
+    }
+
+    if (valorInput.value.startsWith(' ')) {
+        valorInput.value = valorInput.value.trimStart();
+    }
+};
+
+function validaEspacoSenha() {
+    var senhaInput = document.getElementById('senha');
+    if (senhaInput.value.startsWith(' ')) {
+        senhaInput.value = senhaInput.value.trimStart();
+    }
+}
+
+function validaEspacoConfirmaNome() {
+    var confirmaNomeInput = document.getElementById('confirmaNome');
+    if (confirmaNomeInput.value.startsWith(' ')) {
+        confirmaNomeInput.value = confirmaNomeInput.value.trimStart();
+    }
+}
+
+function validaEspacoEmail() {
+    var valorInput = document.getElementById('email');
+    if (valorInput.value.startsWith(' ')) {
+        valorInput.value = valorInput.value.trimStart();
+    }
+}
+
+function maiuscula(){
+    var descricao = document.getElementById('descricao');
+    descricao.value = descricao.value.toLowerCase();
+    descricao.value = descricao.value.charAt(0).toUpperCase() + descricao.value.slice(1);
+}
+
+// --- Validação de senha no editar ---
+const senhaInput = document.getElementById('senha');
+const btnSalvar = document.getElementById('btnSalvar');
+
+if (senhaInput) {
+    // Campo senha existe: usuário comum, ativa validação
+    senhaInput.addEventListener('input', validaTudoEditar);
+    window.addEventListener('load', validaTudoEditar);
+} else {
+    // Não tem campo senha: admin, habilita botão salvar direto
+    if (btnSalvar) btnSalvar.disabled = false;
+}
+
+function validaTudoEditar() {
+    if (!senhaInput) return;
+
+    const senha = senhaInput.value || '';
+
+    // elementos dos critérios (devem existir no HTML)
+    const minuscula = document.getElementById('minuscula');
+    const maiuscula = document.getElementById('maiuscula');
+    const numero = document.getElementById('numero');
+    const especial = document.getElementById('especial');
+    const quantidade = document.getElementById('quantidade');
+
+    if (!minuscula || !maiuscula || !numero || !especial || !quantidade) return;
+
+    // reset para vermelho (mesma lógica que você usou)
+    minuscula.style.color = 'red';
+    maiuscula.style.color = 'red';
+    numero.style.color = 'red';
+    especial.style.color = 'red';
+    quantidade.style.color = 'red';
+
+    // percorre caractere a caractere (mesma abordagem do cadastro)
+    for (let i = 0; i < senha.length; i++) {
+        const c = senha[i];
+        if (c >= 'a' && c <= 'z') {
+            minuscula.style.color = 'green';
+        } else if (c >= 'A' && c <= 'Z') {
+            maiuscula.style.color = 'green';
+        } else if (c >= '0' && c <= '9') {
+            numero.style.color = 'green';
+        } else if ('!@#$%^&*()_+[]{}|:;,.<>?\\/~`-='.includes(c)) {
+            especial.style.color = 'green';
+        }
+    }
+
+    if (senha.length >= 8) {
+        quantidade.style.color = 'green';
+    }
+
+    const okMinus = minuscula.style.color === 'green';
+    const okMaius = maiuscula.style.color === 'green';
+    const okNum = numero.style.color === 'green';
+    const okEsp = especial.style.color === 'green';
+    const okQuant = quantidade.style.color === 'green';
+
+    // ativa/desativa botão (mesma lógica)
+    if (btnSalvar) btnSalvar.disabled = !(okMinus && okMaius && okNum && okEsp && okQuant);
+}
+
+// liga o listener e executa no load (cobre campo já preenchido)
+if (senhaInput) {
+    senhaInput.addEventListener('input', validaTudoEditar);
+    window.addEventListener('load', validaTudoEditar);
 }
 
 // Alterna o menu hamburguer entre aberto e fechado
@@ -141,3 +264,8 @@ function menuDash() {
         aberto = 0;
     }
 }
+
+let mes = document.getElementById('pegaMes').value
+console.log(mes)
+document.getElementById('mes' + mes).style.backgroundColor = '#168C44';
+document.getElementById('mes' + mes).style.color = 'white';
