@@ -1,5 +1,10 @@
 @media (max-width: 769px) {
 
+    /* Menssagem flash */
+    .flash-messages {
+        width: 40vw;
+    }
+
     /* Nav */
     header nav {
         width: 60%;
@@ -40,8 +45,6 @@
     .banner p {
         margin-left: 40px;
     }
-
-    /* Não lembro */
 
     .fundo_sem_chapeu {
         background-image: var(--gradient_fundo);
@@ -140,13 +143,62 @@
     .emprestimo {
         width: 45vw;
     }
+
+    .meses {
+        display: none;
+    }
+
+    .meses_select {
+        display: flex;
+        text-align: center;
+    }
+
+    .infos_historico {
+        margin: 20px auto;
+    }
+
+    .grafico {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .fundo_perfil a{
+        margin: 0 10px;
+    }
+
+    .dash_movimenta .card_valores {
+        padding: 10px;
+    }
 }
 
 @media (max-width: 426px) {
 
+    /* Menssagem flash */
+    .flash-messages {
+        margin: auto;
+        width: 90vw;
+        left: 0;
+        right: 0;
+    }
+
+    .sucesso,
+    .erro {
+        font-size: var(--font-texto-responsivo);
+    }
+
     /* header */
     header {
         flex-direction: row;
+    }
+
+    .header_perfil_adm{
+        flex-direction: column;
+    }
+
+    .header_perfil_adm h2{
+
     }
 
     #nav {
@@ -381,11 +433,21 @@
 
     .fundo_perfil .infos_perfil div div {
         flex-wrap: wrap;
-        gap: 20px;
+        width: 100%;
     }
 
+    .fundo_perfil .infos_perfil div div p:first-child{
+        margin-bottom: 10px;
+    }
+
+    .fundo_perfil .infos_perfil div div p{
+        margin: auto;
+        text-align: center;
+        font-size: 1.4em;
+    }
     .container_cards {
         flex-direction: column;
+        margin: 15px auto;
     }
 
     .fundo_perfil .card_valores {
@@ -394,6 +456,10 @@
     }
 
     /* adicionar adm e taxa */
+    .adicionar_taxa {
+        height: 34.4px;
+    }
+
     .fundo .fundo_form {
         width: var(--width-form-responsivo);
     }
@@ -481,6 +547,7 @@
     .card_historico {
         display: flex;
         flex-direction: column;
+        max-height: 370px;
     }
 
     .card_historico p {
@@ -501,6 +568,10 @@
         margin: auto;
     }
 
+    .dash_movimenta .card_valores {
+        text-align: center;
+    }
+
     .receitas,
     .despesas,
     .dsah_movimenta .card_valores,
@@ -511,6 +582,14 @@
 
     .nav_dash_outra {
         flex-direction: column;
+    }
+
+    .dash_historico .receitas .d-flex {
+        flex-direction: column;
+    }
+
+    .grafico{
+        display: none;
     }
 }
 
